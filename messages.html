@@ -4,8 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Messages - FreelanceHub</title>
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .messages-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            height: calc(100vh - 64px);
+            background: white;
+        }
+        .conversation-list {
+            border-right: 1px solid #e5e7eb;
+            overflow-y: auto;
+        }
+        .conversation-item {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .conversation-item:hover {
+            background-color: #f9fafb;
+        }
+        .conversation-item.active {
+            background-color: #f3f4f6;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+        .message-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            background: #f9fafb;
+        }
+        .message-bubble {
+            max-width: 70%;
+            margin-bottom: 1rem;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            position: relative;
+        }
+        .message-bubble.sent {
+            background: #3b82f6;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 0.25rem;
+        }
+        .message-bubble.received {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-bottom-left-radius: 0.25rem;
+        }
+        .message-input {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        .message-input-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .message-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            outline: none;
+        }
+        .message-input input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        .typing-indicator {
+            padding: 0.5rem;
+            color: #6b7280;
+            font-size: 0.875rem;
+            font-style: italic;
+        }
+        .message-status {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            color: #9ca3af;
+        }
+        .unread-badge {
+            background: #3b82f6;
+            color: white;
+            border-radius: 9999px;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+        }
+    </style>
 </head>
 <body>
     <nav id="mainNav">
@@ -15,12 +117,43 @@
         </div>
     </nav>
 
-    <main class="container">
-        <div class="messages-container">
-            <div class="message-list"></div>
+    <main class="messages-layout">
+        <!-- Conversation List -->
+        <div class="conversation-list" id="conversationList">
+            <!-- Conversations will be populated here -->
+        </div>
+
+        <!-- Chat Area -->
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h2 class="text-lg font-semibold" id="chatTitle">Select a conversation</h2>
+                        <p class="text-sm text-gray-500" id="jobTitle"></p>
+                    </div>
+                    <div class="online-status text-sm text-gray-500" id="onlineStatus"></div>
+                </div>
+            </div>
+
+            <!-- Message List -->
+            <div class="message-list" id="messageList">
+                <!-- Messages will be populated here -->
+            </div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator hidden" id="typingIndicator">
+                Someone is typing...
+            </div>
+
+            <!-- Message Input -->
             <div class="message-input">
-                <input type="text" placeholder="Type a message...">
-                <button>Send</button>
+                <div class="message-input-container">
+                    <input type="text" id="messageInput" placeholder="Type a message..." disabled>
+                    <button id="sendButton" class="btn-primary" disabled>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </main>
@@ -28,5 +161,164 @@
     <script src="js/storage.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/messaging.js"></script>
+    <script>
+        // Initialize services
+        const storageService = new StorageService();
+        const authService = new AuthService(storageService);
+        const messageService = new MessageService(storageService);
+
+        // Get current user
+        const currentUser = authService.getCurrentUser();
+        if (!currentUser) {
+            window.location.href = 'auth/login.html';
+        }
+
+        messageService.setCurrentUser(currentUser);
+
+        // DOM elements
+        const conversationList = document.getElementById('conversationList');
+        const messageList = document.getElementById('messageList');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const chatTitle = document.getElementById('chatTitle');
+        const jobTitle = document.getElementById('jobTitle');
+        const typingIndicator = document.getElementById('typingIndicator');
+
+        // Load conversations
+        function loadConversations() {
+            const conversations = messageService.getConversations();
+            conversationList.innerHTML = conversations.map(conv => {
+                const otherUser = conv.participants.find(id => id !== currentUser.id);
+                const unreadCount = messageService.getMessages()
+                    .filter(m => m.receiverId === currentUser.id && !m.read && 
+                            m.senderId === otherUser && m.jobId === conv.jobId).length;
+                
+                return `
+                    <div class="conversation-item" data-user-id="${otherUser}" data-job-id="${conv.jobId}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="font-semibold">${otherUser}</h3>
+                                <p class="text-sm text-gray-500">${conv.lastMessage.content}</p>
+                            </div>
+                            ${unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load messages for a conversation
+        function loadMessages(userId, jobId) {
+            const messages = messageService.getConversation(currentUser.id, userId, jobId);
+            messageList.innerHTML = messages.map(msg => {
+                const isSent = msg.senderId === currentUser.id;
+                return `
+                    <div class="message-bubble ${isSent ? 'sent' : 'received'}">
+                        <div class="message-content">${msg.content}</div>
+                        <div class="message-status">
+                            ${new Date(msg.timestamp).toLocaleTimeString()} · 
+                            ${isSent ? (msg.delivered ? 'Delivered' : 'Sent') : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            messageList.scrollTop = messageList.scrollHeight;
+        }
+
+        // Handle conversation selection
+        conversationList.addEventListener('click', (e) => {
+            const item = e.target.closest('.conversation-item');
+            if (item) {
+                // Remove active class from all items
+                document.querySelectorAll('.conversation-item').forEach(i => i.classList.remove('active'));
+                // Add active class to selected item
+                item.classList.add('active');
+
+                const userId = item.dataset.userId;
+                const jobId = item.dataset.jobId;
+                
+                messageService.setActiveConversation(userId, jobId);
+                loadMessages(userId, jobId);
+                
+                // Enable input
+                messageInput.disabled = false;
+                sendButton.disabled = false;
+                
+                // Update header
+                chatTitle.textContent = `Chat with ${userId}`;
+                // You would typically get the job title from your job service
+                jobTitle.textContent = `Job: ${jobId}`;
+            }
+        });
+
+        // Handle message sending
+        let typingTimeout;
+        messageInput.addEventListener('input', () => {
+            if (messageService.activeConversation) {
+                clearTimeout(typingTimeout);
+                // Simulate typing indicator
+                typingIndicator.classList.remove('hidden');
+                typingTimeout = setTimeout(() => {
+                    typingIndicator.classList.add('hidden');
+                }, 1000);
+            }
+        });
+
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendButton.addEventListener('click', sendMessage);
+
+        async function sendMessage() {
+            if (!messageInput.value.trim() || !messageService.activeConversation) return;
+
+            try {
+                const message = await messageService.sendMessage({
+                    senderId: currentUser.id,
+                    receiverId: messageService.activeConversation.userId,
+                    jobId: messageService.activeConversation.jobId,
+                    content: messageInput.value
+                });
+
+                // Clear input
+                messageInput.value = '';
+                
+                // Reload messages
+                loadMessages(messageService.activeConversation.userId, messageService.activeConversation.jobId);
+                
+                // Update conversation list
+                loadConversations();
+            } catch (error) {
+                console.error('Error sending message:', error);
+                alert('Failed to send message. Please try again.');
+            }
+        }
+
+        // Register for new message notifications
+        messageService.on('newMessage', (messages) => {
+            if (messageService.activeConversation) {
+                const activeMessages = messages.filter(m => 
+                    m.senderId === messageService.activeConversation.userId &&
+                    m.jobId === messageService.activeConversation.jobId
+                );
+                if (activeMessages.length > 0) {
+                    loadMessages(messageService.activeConversation.userId, messageService.activeConversation.jobId);
+                }
+            }
+            loadConversations();
+        });
+
+        // Request notification permission
+        if ('Notification' in window) {
+            Notification.requestPermission();
+        }
+
+        // Initial load
+        loadConversations();
+    </script>
 </body>
 </html> 

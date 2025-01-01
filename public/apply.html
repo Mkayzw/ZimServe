@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job - FreelanceHub</title>
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/public/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/public/favicon/site.webmanifest">
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+<body>
+    <nav id="mainNav">
+        <div class="nav-content">
+            <h1><a href="/public/index.html">FreelanceHub</a></h1>
+            <div class="nav-links">
+                <a href="/public/dashboard.html">Dashboard</a>
+                <a href="/public/profile.html">Profile</a>
+                <a href="#" onclick="logout()" class="btn-secondary">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="application-container">
+            <div id="jobDetails" class="job-card">
+                <!-- Job details will be populated here -->
+            </div>
+
+            <form id="applicationForm" class="application-form">
+                <h2>Apply for this Position</h2>
+                
+                <div class="form-group">
+                    <label for="coverLetter">Cover Letter</label>
+                    <textarea id="coverLetter" name="coverLetter" rows="6" required
+                        placeholder="Introduce yourself and explain why you're the perfect fit for this job..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="proposedRate">Your Proposed Rate (if different from budget)</label>
+                    <input type="number" id="proposedRate" name="proposedRate" placeholder="Enter your proposed rate">
+                </div>
+
+                <div class="form-group">
+                    <label for="availability">Availability</label>
+                    <select id="availability" name="availability" required>
+                        <option value="">Select your availability</option>
+                        <option value="immediate">Immediate</option>
+                        <option value="1week">Within 1 week</option>
+                        <option value="2weeks">Within 2 weeks</option>
+                        <option value="custom">Custom (specify in cover letter)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary">Submit Application</button>
+                <a href="javascript:history.back()" class="btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </main>
+
+    <script src="/public/js/auth.js"></script>
+    <script>
+        // Get job ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const jobId = urlParams.get('jobId');
+
+        // Load job details
+        function loadJobDetails() {
+            const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
+            // Convert jobId to number for comparison since IDs from URL are strings
+            const job = jobs.find(j => j.id === parseInt(jobId));
+            
+            if (!job) {
+                window.location.href = '/public/dashboard.html';
+                return;
+            }
+
+            const jobDetails = document.getElementById('jobDetails');
+            jobDetails.innerHTML = `
+                <h3>${job.title}</h3>
+                <p>${job.description}</p>
+                <p class="budget">Budget: $${job.budget}</p>
+                <p>Posted by: ${job.clientName}</p>
+                <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
+            `;
+        }
+
+        // Handle form submission
+        document.getElementById('applicationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                jobId: parseInt(jobId),
+                coverLetter: document.getElementById('coverLetter').value,
+                proposedRate: document.getElementById('proposedRate').value,
+                availability: document.getElementById('availability').value,
+                applicantId: getCurrentUser().id,
+                applicationDate: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            // Get existing applications or initialize empty array
+            const applications = JSON.parse(localStorage.getItem('applications') || '[]');
+            
+            // Check if user has already applied (use parseInt for comparison)
+            if (applications.some(app => app.jobId === parseInt(jobId) && app.applicantId === formData.applicantId)) {
+                alert('You have already applied for this job');
+                return;
+            }
+
+            // Add new application
+            applications.push(formData);
+            localStorage.setItem('applications', JSON.stringify(applications));
+
+            alert('Your application has been submitted successfully!');
+            window.location.href = '/public/dashboard.html';
+        });
+
+        // Check if user is logged in
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+            window.location.href = '/public/auth/login.html';
+        } else if (currentUser.role !== 'freelancer') {
+            window.location.href = '/public/dashboard.html';
+        }
+
+        // Load job details when page loads
+        loadJobDetails();
+    </script>
+</body>
+</html> 

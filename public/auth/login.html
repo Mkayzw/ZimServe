@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+<body>
+    <nav id="mainNav">
+        <div class="nav-content">
+            <h1><a href="/public/index.html">FreelanceHub</a></h1>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="auth-form">
+            <h2>Login to Your Account</h2>
+            <form id="loginForm">
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+            <p class="auth-links">
+                Don't have an account? <a href="/public/auth/signup.html">Sign Up</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="/public/js/storage.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const email = formData.get('email');
+            const password = formData.get('password');
+
+            try {
+                const authService = new AuthService(new StorageService());
+                await authService.login(email, password);
+                window.location.href = '/public/dashboard.html';
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // Pre-fill form if URL parameters exist
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const password = urlParams.get('password');
+            
+            if (email) {
+                document.querySelector('input[name="email"]').value = email;
+            }
+            if (password) {
+                document.querySelector('input[name="password"]').value = password;
+            }
+        });
+    </script>
+</body>
+</html> 

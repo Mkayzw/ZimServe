@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+</head>
+<body>
+    <nav id="mainNav">
+        <div class="nav-content">
+            <h1><a href="/public/index.html">FreelanceHub</a></h1>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="auth-form">
+            <h2>Create Account</h2>
+            <form id="signupForm">
+                <input type="text" name="name" placeholder="Full Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <select name="role" id="roleSelect" required>
+                    <option value="">Select Role</option>
+                    <option value="client">I want to hire</option>
+                    <option value="freelancer">I want to work</option>
+                </select>
+                <button type="submit" class="btn-primary">Sign Up</button>
+            </form>
+            <p class="auth-links">
+                Already have an account? <a href="/public/auth/login.html">Login</a>
+            </p>
+        </div>
+    </main>
+
+    <script src="/public/js/storage.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script src="/public/js/validation.js"></script>
+    <script>
+        // Set the role based on URL parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role');
+            if (role) {
+                document.getElementById('roleSelect').value = role;
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const userData = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                role: formData.get('role')
+            };
+
+            // Validate form data
+            const errors = FormValidator.validateRegistration(formData);
+            if (errors.length > 0) {
+                alert(errors.join('\n'));
+                return;
+            }
+
+            try {
+                const authService = new AuthService(new StorageService());
+                await authService.register(userData);
+                window.location.href = '/public/dashboard.html';
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html> 

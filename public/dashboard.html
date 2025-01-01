@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .job-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .job-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        .job-card p {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+        .job-card .budget {
+            font-weight: 600;
+            color: var(--accent);
+        }
+        .dashboard-actions {
+            margin-bottom: 2rem;
+        }
+        .job-form {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .job-form input, .job-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .job-form textarea {
+            min-height: 100px;
+        }
+        .welcome-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .welcome-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .applications-list {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .application-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .application-item:last-child {
+            border-bottom: none;
+        }
+        .application-item .applicant-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .application-item .status {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.875rem;
+            margin-left: 0.5rem;
+        }
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .status-accepted {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .status-rejected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+        .modal-content {
+            position: relative;
+            background: white;
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: var(--radius);
+        }
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav id="mainNav">
+        <div class="nav-content">
+            <h1>FreelanceHub</h1>
+            <div class="nav-links">
+                <a href="/public/profile.html" class="btn-secondary">Profile</a>
+                <button onclick="handleLogout()" class="btn-secondary">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="welcome-header">
+            <h2>Welcome, <span id="userName"></span></h2>
+        </div>
+
+        <div id="clientDashboard" class="hidden">
+            <div class="dashboard-actions">
+                <button onclick="showJobPostForm()" class="btn-primary">Post New Job</button>
+            </div>
+            
+            <div id="jobPostForm" class="job-form hidden">
+                <h3>Post a New Job</h3>
+                <form onsubmit="handleJobPost(event)">
+                    <input type="text" name="title" placeholder="Job Title" required>
+                    <textarea name="description" placeholder="Job Description" required></textarea>
+                    <input type="number" name="budget" placeholder="Budget ($)" required>
+                    <button type="submit" class="btn-primary">Post Job</button>
+                </form>
+            </div>
+
+            <h3>My Posted Jobs</h3>
+            <div id="myPostedJobs"></div>
+        </div>
+
+        <div id="freelancerDashboard" class="hidden">
+            <h3>Available Jobs</h3>
+            <div id="availableJobs"></div>
+
+            <h3>My Applications</h3>
+            <div id="myApplications"></div>
+        </div>
+    </div>
+
+    <!-- Applications Modal -->
+    <div id="applicationsModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeApplicationsModal()">&times;</span>
+            <h2>Applications for <span id="jobTitle"></span></h2>
+            <div id="applicationsContainer"></div>
+        </div>
+    </div>
+
+    <script src="/public/js/storage.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script src="/public/js/jobs.js"></script>
+    <script>
+        const dashboard = new Dashboard(new StorageService(), new AuthService(new StorageService()));
+
+        function showJobPostForm() {
+            const form = document.getElementById('jobPostForm');
+            form.classList.toggle('hidden');
+        }
+
+        function handleLogout() {
+            const authService = new AuthService(new StorageService());
+            authService.logout();
+            window.location.href = '/public/index.html';
+        }
+
+        function showApplicationsModal(jobId) {
+            const modal = document.getElementById('applicationsModal');
+            modal.style.display = 'block';
+            dashboard.loadJobApplications(jobId);
+        }
+
+        function closeApplicationsModal() {
+            const modal = document.getElementById('applicationsModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('applicationsModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const authService = new AuthService(new StorageService());
+            const currentUser = authService.getCurrentUser();
+            
+            if (!currentUser) {
+                window.location.href = '/public/auth/login.html';
+                return;
+            }
+
+            // Set user name
+            document.getElementById('userName').textContent = currentUser.name;
+
+            // Show appropriate dashboard
+            if (currentUser.role === 'client') {
+                document.getElementById('clientDashboard').classList.remove('hidden');
+                dashboard.loadPostedJobs();
+            } else {
+                document.getElementById('freelancerDashboard').classList.remove('hidden');
+                dashboard.loadAvailableJobs();
+                dashboard.loadMyApplications();
+            }
+        });
+
+        function loadAvailableJobs() {
+            const jobs = this.storage.getJobs()
+                .filter(job => job.status === 'open');
+            const jobsContainer = document.getElementById('availableJobs');
+            
+            if (jobs.length === 0) {
+                jobsContainer.innerHTML = '<p>No jobs available at the moment.</p>';
+                return;
+            }
+
+            jobsContainer.innerHTML = jobs.map(job => `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.description}</p>
+                    <p class="budget">Budget: $${job.budget}</p>
+                    <p>Posted by: ${job.clientName}</p>
+                    <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
+                    <div class="job-actions">
+                        ${this.hasApplied(job.id) 
+                            ? '<button disabled class="btn-secondary">Applied</button>'
+                            : `<a href="/public/apply.html?jobId=${job.id}" class="btn-primary">Apply Now</a>`
+                        }
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html> 

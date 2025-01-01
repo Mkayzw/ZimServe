@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Jobs - FreelanceHub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/public/css/styles.css">
+    <style>
+        .jobs-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        .jobs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .jobs-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .freelancer-cta {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(to bottom right, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.1));
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+        .freelancer-cta h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        .freelancer-cta p {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav id="mainNav">
+        <div class="nav-content">
+            <h1><a href="/public/index.html">FreelanceHub</a></h1>
+            <div class="nav-links">
+                <a href="/public/auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
+                <a href="/public/auth/login.html" class="btn-secondary">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="jobs-container">
+        <div class="freelancer-cta">
+            <h3>Ready to start freelancing?</h3>
+            <p>Sign up as a freelancer to apply for these jobs and start your freelancing journey today!</p>
+            <a href="/public/auth/signup.html?role=freelancer" class="btn-primary">Sign Up as Freelancer</a>
+        </div>
+
+        <div class="jobs-header">
+            <h2>Available Jobs</h2>
+        </div>
+
+        <div id="availableJobs"></div>
+    </div>
+
+    <script src="/public/js/storage.js"></script>
+    <script>
+        // Placeholder jobs data
+        const placeholderJobs = [
+            {
+                id: 1,
+                title: "Full Stack Web Application Development",
+                description: "Looking for an experienced developer to build a modern web application using React and Node.js. The project includes user authentication, database integration, and real-time features.",
+                budget: 5000,
+                clientName: "TechCorp Solutions",
+                createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
+                status: "open"
+            },
+            {
+                id: 2,
+                title: "Mobile App UI/UX Design",
+                description: "Need a talented designer to create a modern and intuitive user interface for our iOS/Android fitness tracking app. Experience with Figma and mobile design patterns required.",
+                budget: 3000,
+                clientName: "FitTech Innovations",
+                createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+                status: "open"
+            },
+            {
+                id: 3,
+                title: "WordPress E-commerce Website",
+                description: "Seeking a WordPress expert to build an e-commerce website for a fashion boutique. Must include product catalog, shopping cart, and payment integration with Stripe.",
+                budget: 2500,
+                clientName: "Fashion Forward",
+                createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
+                status: "open"
+            },
+            {
+                id: 4,
+                title: "Python Data Analysis Script",
+                description: "Need a Python developer to create scripts for analyzing large datasets of customer behavior. Experience with pandas, numpy, and data visualization required.",
+                budget: 1800,
+                clientName: "DataMetrics Inc",
+                createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
+                status: "open"
+            },
+            {
+                id: 5,
+                title: "Logo and Brand Identity Design",
+                description: "Looking for a creative designer to develop a complete brand identity including logo, color palette, and brand guidelines for a new tech startup.",
+                budget: 1500,
+                clientName: "StartUp Ventures",
+                createdAt: new Date().toISOString(), // Just now
+                status: "open"
+            }
+        ];
+
+        class PublicJobsView {
+            constructor(storageService) {
+                this.storage = storageService;
+                this.initializePlaceholderJobs();
+            }
+
+            initializePlaceholderJobs() {
+                const existingJobs = this.storage.getJobs();
+                if (existingJobs.length === 0) {
+                    placeholderJobs.forEach(job => {
+                        this.storage.createJob(job);
+                    });
+                }
+            }
+
+            loadJobs() {
+                const jobs = this.storage.getJobs()
+                    .filter(job => job.status === 'open')
+                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                
+                const jobsContainer = document.getElementById('availableJobs');
+                
+                if (jobs.length === 0) {
+                    jobsContainer.innerHTML = '<p>No jobs available at the moment.</p>';
+                    return;
+                }
+
+                jobsContainer.innerHTML = jobs.map(job => `
+                    <div class="job-card">
+                        <h3>${job.title}</h3>
+                        <p>${job.description}</p>
+                        <p class="budget">Budget: $${job.budget}</p>
+                        <p>Posted by: ${job.clientName}</p>
+                        <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
+                        <div class="job-actions">
+                            <a href="/public/apply.html?jobId=${job.id}" class="btn-primary">Apply Now</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Initialize and load jobs when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const jobsView = new PublicJobsView(new StorageService());
+            jobsView.loadJobs();
+        });
+    </script>
+</body>
+</html> 

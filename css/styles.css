@@ -4,6 +4,7 @@
     --accent: #0ea5e9;
     --border: #e2e8f0;
     --radius: 0.5rem;
+    --background: #f8fafc;
 }
 
 /* Reset and base styles */
@@ -16,7 +17,7 @@
 body {
     font-family: system-ui, -apple-system, sans-serif;
     line-height: 1.5;
-    background: #f8fafc;
+    background: var(--background);
     color: #334155;
 }
 
@@ -96,6 +97,33 @@ body {
     padding: 2rem 1.5rem;
 }
 
+/* Hero Section */
+.hero {
+    background: linear-gradient(to bottom right, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.1));
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.25rem;
+    color: var(--secondary);
+    margin-bottom: 2rem;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
 /* Job Cards */
 .job-card {
     background: white;
@@ -159,11 +187,102 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     font-size: 1rem;
+    background: white;
 }
 
 .form-group textarea {
     min-height: 120px;
     resize: vertical;
+}
+
+/* Application Form */
+.application-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.application-form {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-top: 2rem;
+}
+
+.application-form h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+.text-secondary {
+    color: var(--secondary);
+}
+
+/* Auth Forms */
+.auth-form {
+    max-width: 400px;
+    margin: 2rem auto;
+    background: white;
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.auth-form .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 1rem;
+    background: white;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.auth-links {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: var(--secondary);
+    font-size: 0.9375rem;
+}
+
+.auth-links a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
 }
 
 /* Mobile Responsive Styles */
@@ -192,11 +311,28 @@ body {
         padding: 0.75rem;
     }
 
+    /* Hero Section */
+    .hero {
+        padding: 3rem 0;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero p {
+        font-size: 1.125rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        padding: 0 1rem;
+    }
+
     /* Job Cards */
     .job-card {
         padding: 1.25rem;
         margin-bottom: 1rem;
-        border-radius: 0.75rem;
     }
 
     .job-card:hover {
@@ -223,6 +359,16 @@ body {
         flex-direction: column;
         gap: 0.5rem;
     }
+
+    /* Forms */
+    .application-form {
+        padding: 1.5rem;
+    }
+
+    .auth-form {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
 }
 
 /* Small screens */
@@ -244,21 +390,16 @@ body {
         font-size: 0.9375rem;
     }
 
-    .job-card {
-        padding: 1rem;
-        margin-bottom: 0.75rem;
+    .hero h1 {
+        font-size: 1.75rem;
     }
 
-    .job-card h3 {
+    .hero p {
         font-size: 1rem;
     }
 
-    .job-card p {
-        font-size: 0.875rem;
-    }
-
-    .job-card .budget {
-        font-size: 0.9375rem;
-        margin: 0.5rem 0;
+    .job-card {
+        padding: 1rem;
+        margin-bottom: 0.75rem;
     }
 } 

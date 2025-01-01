@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - FreelanceHub</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         .dashboard-container {
             max-width: 1200px;
@@ -139,7 +139,7 @@
         <div class="nav-content">
             <h1>FreelanceHub</h1>
             <div class="nav-links">
-                <a href="/public/profile.html" class="btn-secondary">Profile</a>
+                <a href="profile.html" class="btn-secondary">Profile</a>
                 <button onclick="handleLogout()" class="btn-secondary">Logout</button>
             </div>
         </div>
@@ -187,9 +187,9 @@
         </div>
     </div>
 
-    <script src="/public/js/storage.js"></script>
-    <script src="/public/js/auth.js"></script>
-    <script src="/public/js/jobs.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/jobs.js"></script>
     <script>
         const dashboard = new Dashboard(new StorageService(), new AuthService(new StorageService()));
 
@@ -201,7 +201,7 @@
         function handleLogout() {
             const authService = new AuthService(new StorageService());
             authService.logout();
-            window.location.href = '/public/index.html';
+            window.location.href = 'index.html';
         }
 
         function showApplicationsModal(jobId) {
@@ -229,7 +229,7 @@
             const currentUser = authService.getCurrentUser();
             
             if (!currentUser) {
-                window.location.href = '/public/auth/login.html';
+                window.location.href = 'auth/login.html';
                 return;
             }
 
@@ -246,33 +246,6 @@
                 dashboard.loadMyApplications();
             }
         });
-
-        function loadAvailableJobs() {
-            const jobs = this.storage.getJobs()
-                .filter(job => job.status === 'open');
-            const jobsContainer = document.getElementById('availableJobs');
-            
-            if (jobs.length === 0) {
-                jobsContainer.innerHTML = '<p>No jobs available at the moment.</p>';
-                return;
-            }
-
-            jobsContainer.innerHTML = jobs.map(job => `
-                <div class="job-card">
-                    <h3>${job.title}</h3>
-                    <p>${job.description}</p>
-                    <p class="budget">Budget: $${job.budget}</p>
-                    <p>Posted by: ${job.clientName}</p>
-                    <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
-                    <div class="job-actions">
-                        ${this.hasApplied(job.id) 
-                            ? '<button disabled class="btn-secondary">Applied</button>'
-                            : `<a href="/public/apply.html?jobId=${job.id}" class="btn-primary">Apply Now</a>`
-                        }
-                    </div>
-                </div>
-            `).join('');
-        }
     </script>
 </body>
 </html> 

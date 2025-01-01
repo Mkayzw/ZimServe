@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for Job - FreelanceHub</title>
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/public/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/public/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/public/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/public/favicon/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/public/css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <nav id="mainNav">
         <div class="nav-content">
-            <h1><a href="/public/index.html">FreelanceHub</a></h1>
+            <h1><a href="index.html">FreelanceHub</a></h1>
             <div class="nav-links">
-                <a href="/public/dashboard.html">Dashboard</a>
-                <a href="/public/profile.html">Profile</a>
+                <a href="dashboard.html">Dashboard</a>
+                <a href="profile.html">Profile</a>
                 <a href="#" onclick="logout()" class="btn-secondary">Logout</a>
             </div>
         </div>
@@ -62,7 +62,7 @@
         </div>
     </main>
 
-    <script src="/public/js/auth.js"></script>
+    <script src="js/auth.js"></script>
     <script>
         // Get job ID from URL parameters
         const urlParams = new URLSearchParams(window.location.search);
@@ -75,7 +75,7 @@
             const job = jobs.find(j => j.id === parseInt(jobId));
             
             if (!job) {
-                window.location.href = '/public/dashboard.html';
+                window.location.href = 'dashboard.html';
                 return;
             }
 
@@ -117,15 +117,15 @@
             localStorage.setItem('applications', JSON.stringify(applications));
 
             alert('Your application has been submitted successfully!');
-            window.location.href = '/public/dashboard.html';
+            window.location.href = 'dashboard.html';
         });
 
         // Check if user is logged in
         const currentUser = getCurrentUser();
         if (!currentUser) {
-            window.location.href = '/public/auth/login.html';
+            window.location.href = 'auth/login.html';
         } else if (currentUser.role !== 'freelancer') {
-            window.location.href = '/public/dashboard.html';
+            window.location.href = 'dashboard.html';
         }
 
         // Load job details when page loads

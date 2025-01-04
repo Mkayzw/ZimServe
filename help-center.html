@@ -169,6 +169,42 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script>
+    <!-- Scripts -->
+    <script src="js/storage.js"></script>
+    <script>
+        // Wait for StorageService to be available
+        document.addEventListener('DOMContentLoaded', () => {
+            const storage = new StorageService();
+            
+            // Update navigation based on auth state
+            const navLinks = document.querySelector('.nav-links');
+            const user = storage.getCurrentUser();
+            
+            if (user) {
+                navLinks.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <span class="text-sm text-muted-foreground">Welcome, ${user.name}</span>
+                        <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                        <button onclick="handleLogout()" class="btn-secondary">Logout</button>
+                    </div>
+                `;
+            } else {
+                navLinks.innerHTML = `
+                    <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
+                    <a href="auth/login.html" class="btn-secondary">Login</a>
+                `;
+            }
+        });
+
+        // Handle logout
+        function handleLogout() {
+            const storage = new StorageService();
+            storage.logout();
+            window.location.reload();
+        }
+
+        // Make logout function globally available
+        window.handleLogout = handleLogout;
+    </script>
 </body>
 </html> 

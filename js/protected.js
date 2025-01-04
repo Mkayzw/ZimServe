@@ -82,5 +82,12 @@ class ProtectedRoutes {
 
 // Initialize protection on page load
 document.addEventListener('DOMContentLoaded', () => {
-    new ProtectedRoutes();
+    const storageService = new StorageService();
+    const authService = new AuthService(storageService);
+
+    if (!authService.isLoggedIn()) {
+        const currentUrl = window.location.href;
+        const loginUrl = `auth/login.html?returnUrl=${encodeURIComponent(currentUrl)}`;
+        window.location.href = loginUrl;
+    }
 }); 

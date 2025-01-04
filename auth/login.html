@@ -55,50 +55,16 @@
                     <!-- Error messages will be inserted here -->
                 </div>
                 <div class="grid gap-6">
-                    <form id="loginForm" class="animate-in">
-                        <div class="grid gap-4">
-                            <div class="grid gap-2">
-                                <label for="email" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                    Email
-                                </label>
-                                <input
-                                    id="email"
-                                    type="email"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    placeholder="name@example.com"
-                                    required
-                                />
-                            </div>
-                            <div class="grid gap-2">
-                                <div class="flex items-center justify-between">
-                                    <label for="password" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                        Password
-                                    </label>
-                                    <a href="#" class="text-sm font-medium text-primary hover:text-primary/90">
-                                        Forgot password?
-                                    </a>
-                                </div>
-                                <input
-                                    id="password"
-                                    type="password"
-                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                                    required
-                                />
-                            </div>
-                            <div class="flex items-center space-x-2">
-                                <input
-                                    id="remember"
-                                    type="checkbox"
-                                    class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                                />
-                                <label for="remember" class="text-sm text-muted-foreground">
-                                    Keep me signed in
-                                </label>
-                            </div>
-                            <button type="submit" class="btn-primary w-full">
-                                Sign In
-                            </button>
+                    <form id="loginForm" class="space-y-4">
+                        <div class="space-y-2">
+                            <label for="email" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Email</label>
+                            <input type="email" id="email" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" placeholder="m@example.com" />
                         </div>
+                        <div class="space-y-2">
+                            <label for="password" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Password</label>
+                            <input type="password" id="password" required class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" />
+                        </div>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full">Sign In</button>
                     </form>
                     <div class="relative">
                         <div class="absolute inset-0 flex items-center">
@@ -139,59 +105,37 @@
         </div>
     </div>
 
+    <!-- Initialize storage service -->
     <script src="../js/storage.js"></script>
     <script>
-        // Initialize storage service
-        const storageService = new StorageService();
+        const storage = new StorageService();
         
-        // Force reset sample data for testing
-        console.log('Resetting sample data...');
-        storageService.addSampleData();
-        console.log('Sample data reset, users:', storageService.getUsers());
-
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const errorContainer = document.getElementById('errorContainer');
-            errorContainer.innerHTML = '';
-            errorContainer.classList.add('hidden');
-
-            // Get form values
-            const formData = {
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                remember: document.getElementById('remember').checked
-            };
-
-            console.log('Login attempt with:', formData.email);
-
-            // Validate form
-            const errors = [];
-            if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                errors.push('Please enter a valid email address');
-            }
-            if (!formData.password) {
-                errors.push('Please enter your password');
-            }
-
-            // Show errors if any
-            if (errors.length > 0) {
-                errorContainer.innerHTML = errors.map(error => `<p>${error}</p>`).join('');
-                errorContainer.classList.remove('hidden');
-                return;
-            }
-
-            // Attempt to login
-            const user = storageService.login(formData.email, formData.password);
-            console.log('Login result:', user);
             
-            if (user) {
-                // Successful login
-                console.log('Login successful, redirecting to dashboard...');
-                window.location.href = '../dashboard.html';
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorContainer = document.getElementById('errorContainer');
+            
+            console.log('Login attempt:', email); // Debug log
+            
+            // Attempt login
+            const result = storage.login(email, password);
+            console.log('Login result:', result); // Debug log
+            
+            if (result.success) {
+                console.log('Login successful, redirecting...'); // Debug log
+                // Get return URL from query params
+                const urlParams = new URLSearchParams(window.location.search);
+                const returnUrl = urlParams.get('returnUrl');
+                
+                // Redirect to return URL or dashboard
+                const redirectTo = returnUrl ? decodeURIComponent(returnUrl) : '../dashboard.html';
+                console.log('Redirecting to:', redirectTo); // Debug log
+                window.location.replace(redirectTo);
             } else {
-                // Failed login
-                console.log('Login failed');
-                errorContainer.innerHTML = '<p>Invalid email or password</p>';
+                // Show error
+                errorContainer.textContent = result.error;
                 errorContainer.classList.remove('hidden');
             }
         });

@@ -178,98 +178,35 @@
         </div>
     </div>
 
+    <!-- Initialize storage service -->
     <script src="../js/storage.js"></script>
     <script>
-        // Initialize storage service
-        const storageService = new StorageService();
+        const storage = new StorageService();
         
-        // Add sample data for testing if no users exist
-        const users = storageService.getUsers();
-        console.log('Current users:', users);
-        
-        if (users.length === 0) {
-            console.log('No users found, adding sample data...');
-            storageService.addSampleData();
-            console.log('Sample data added, users:', storageService.getUsers());
-        }
-
-        // Pre-fill role if specified in URL
-        document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const role = urlParams.get('role');
-            if (role) {
-                document.getElementById('role').value = role;
-            }
-        });
-
         document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const errorContainer = document.getElementById('errorContainer');
-            errorContainer.innerHTML = '';
-            errorContainer.classList.add('hidden');
-
-            // Get form values
-            const formData = {
-                role: document.getElementById('role').value,
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                password: document.getElementById('password').value,
-                confirmPassword: document.getElementById('confirmPassword').value,
-                terms: document.getElementById('terms').checked
-            };
-
-            console.log('Signup attempt with:', formData.email);
-
-            // Validate form
-            const errors = [];
-            if (!formData.role) {
-                errors.push('Please select your role');
-            }
-            if (formData.name.length < 2) {
-                errors.push('Name must be at least 2 characters long');
-            }
-            if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                errors.push('Please enter a valid email address');
-            }
-            if (formData.password.length < 8) {
-                errors.push('Password must be at least 8 characters long');
-            }
-            if (formData.password !== formData.confirmPassword) {
-                errors.push('Passwords do not match');
-            }
-            if (!formData.terms) {
-                errors.push('Please accept the terms and conditions');
-            }
-
-            // Show errors if any
-            if (errors.length > 0) {
-                errorContainer.innerHTML = errors.map(error => `<p>${error}</p>`).join('');
-                errorContainer.classList.remove('hidden');
-                return;
-            }
-
-            try {
-                // Attempt to register
-                const user = storageService.register({
-                    name: formData.name,
-                    email: formData.email,
-                    password: formData.password,
-                    role: formData.role,
-                    skills: [],
-                    avatar: null
-                });
+            console.log('Signup attempt');
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Get role from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const role = urlParams.get('role') || 'freelancer';
+            
+            // Attempt registration
+            const result = storage.register(email, password, role);
+            
+            if (result.success) {
+                // Auto login after registration
+                storage.login(email, password);
                 
-                console.log('Registration successful:', user);
-
-                // Log the user in
-                const loggedInUser = storageService.login(formData.email, formData.password);
-                if (loggedInUser) {
-                    console.log('Auto-login successful, redirecting to dashboard...');
-                    window.location.href = '../dashboard.html';
-                }
-            } catch (error) {
-                console.error('Registration failed:', error);
-                errorContainer.innerHTML = `<p>${error.message}</p>`;
+                // Redirect to dashboard
+                window.location.href = '../dashboard.html';
+            } else {
+                // Show error
+                const errorContainer = document.getElementById('errorContainer');
+                errorContainer.textContent = result.error;
                 errorContainer.classList.remove('hidden');
             }
         });

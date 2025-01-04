@@ -173,4 +173,157 @@ function showNotification(message, type = 'info') {
 // Initialize featured jobs on page load
 if (document.querySelector('.featured-jobs')) {
     loadFeaturedJobs();
-} 
+}
+
+// Main JavaScript functionality
+
+// Handle login form submission
+async function handleLogin(event) {
+    event.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('remember-me')?.checked || false;
+
+    try {
+        // In a real app, this would be an API call
+        const response = await loginUser(email, password);
+        
+        if (response.success) {
+            // Set up persistent session
+            const sessionDuration = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000; // 30 days or 1 day
+            const session = {
+                userId: response.userId,
+                email: email,
+                expiresAt: new Date(Date.now() + sessionDuration).toISOString()
+            };
+
+            // Store auth data
+            localStorage.setItem('authToken', response.token);
+            localStorage.setItem('userSession', JSON.stringify(session));
+            localStorage.setItem('userData', JSON.stringify(response.userData));
+
+            // Get return URL from query parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const returnUrl = urlParams.get('returnUrl');
+            
+            // Redirect to return URL or dashboard
+            if (returnUrl) {
+                window.location.href = decodeURIComponent(returnUrl);
+            } else {
+                window.location.href = '/dashboard.html';
+            }
+        } else {
+            showNotification('Invalid email or password', 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showNotification('An error occurred during login', 'error');
+    }
+}
+
+// Mock login API call
+async function loginUser(email, password) {
+    return new Promise((resolve) => {
+        // Simulate API delay
+        setTimeout(() => {
+            // Mock successful response
+            resolve({
+                success: true,
+                token: 'mock-jwt-token',
+                userId: '123',
+                userData: {
+                    name: 'John Doe',
+                    email: email,
+                    role: 'freelancer'
+                }
+            });
+        }, 1000);
+    });
+}
+
+// Show notification
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification notification-${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+// Initialize login form if it exists
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+});
+
+// Check login state and update UI
+function updateLoginState() {
+    const authToken = localStorage.getItem('authToken');
+    const userSession = localStorage.getItem('userSession');
+    const userData = localStorage.getItem('userData');
+    
+    if (!authToken || !userSession || !userData) {
+        return;
+    }
+
+    try {
+        const session = JSON.parse(userSession);
+        const user = JSON.parse(userData);
+        
+        // Check if session has expired
+        if (session.expiresAt && new Date(session.expiresAt) < new Date()) {
+            logout();
+            return;
+        }
+
+        // Update navigation links
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            navLinks.innerHTML = `
+                <div class="flex items-center gap-4">
+                    <span class="text-sm text-muted-foreground">Welcome, ${user.name}</span>
+                    <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                    <button onclick="logout()" class="btn-secondary">Logout</button>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error updating login state:', error);
+    }
+}
+
+// Logout function
+function logout() {
+    // Clear all auth-related data
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userSession');
+    localStorage.removeItem('userData');
+    
+    // Reload page to reset state
+    window.location.reload();
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize login form if it exists
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+    }
+
+    // Update login state in navigation
+    updateLoginState();
+});
+
+// Function to periodically check session validity
+function checkSessionValidity() {
+    if (!authService.isLoggedIn()) {
+        handleLogout();
+    }
+}
+
+// Check session validity every 15 minutes
+setInterval(checkSessionValidity, 15 * 60 * 1000); 

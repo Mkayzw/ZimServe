@@ -132,7 +132,7 @@ class StorageService {
         if (!userId) return null;
         
         const users = this.getUsers();
-        return users.find(user => user.id === userId);
+        return users.find(user => user.id === userId) || null;
     }
 
     getUserById(userId) {
@@ -311,5 +311,22 @@ class StorageService {
         localStorage.setItem('conversations', JSON.stringify(updatedConversations));
 
         return newMessage;
+    }
+
+    setItem(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    getItem(key) {
+        const item = localStorage.getItem(key);
+        try {
+            return JSON.parse(item);
+        } catch {
+            return item;
+        }
+    }
+
+    removeItem(key) {
+        localStorage.removeItem(key);
     }
 } 

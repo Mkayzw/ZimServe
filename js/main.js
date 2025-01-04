@@ -1,4 +1,4 @@
-// Main JavaScript file for FreelanceHub
+// Main JavaScript file for HustleHub Zimbabwe
 
 // Handle mobile navigation
 document.addEventListener('DOMContentLoaded', () => {

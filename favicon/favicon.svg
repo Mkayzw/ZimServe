@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
     <rect width="512" height="512" rx="100" fill="#2563eb"/>
-    <path d="M160 120h220v60H230v60h130v60H230v140h-70V120z" fill="white"/>
+    <path d="M140 120h70v140h92v-140h70v320h-70v-140h-92v140h-70V120z" fill="white"/>
+    <path d="M400 380h-70l70-200h-70v-60h140v60z" fill="white"/>
 </svg> 

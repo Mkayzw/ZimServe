@@ -1,135 +1,226 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for Job - FreelanceHub</title>
     <!-- Favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
     <link rel="manifest" href="favicon/site.webmanifest">
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/output.css">
 </head>
-<body>
-    <nav id="mainNav">
-        <div class="nav-content">
-            <h1><a href="index.html">FreelanceHub</a></h1>
-            <div class="nav-links">
-                <a href="dashboard.html">Dashboard</a>
-                <a href="profile.html">Profile</a>
-                <a href="#" onclick="logout()" class="btn-secondary">Logout</a>
+<body class="min-h-screen bg-background font-sans antialiased">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div class="container flex h-16 items-center justify-between">
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold">
+                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        FreelanceHub
+                    </a>
+                </h1>
+                <nav class="hidden md:flex gap-6">
+                    <a href="jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="auth/signup.html?role=freelancer" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Find Work</a>
+                <a href="auth/login.html" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Login</a>
             </div>
         </div>
     </nav>
 
-    <main class="container">
-        <div class="application-container">
-            <div id="jobDetails" class="job-card">
-                <!-- Job details will be populated here -->
+    <main class="container py-8 px-4 md:px-6">
+        <div class="max-w-3xl mx-auto space-y-8">
+            <!-- Job Details Section -->
+            <div id="jobDetails" class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="p-6 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span id="jobCategory" class="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary/10 text-primary hover:bg-primary/20"></span>
+                        <span id="jobPostedAt" class="text-xs text-muted-foreground"></span>
+                    </div>
+                    <div>
+                        <h1 id="jobTitle" class="text-2xl font-bold tracking-tight"></h1>
+                        <p id="jobDescription" class="mt-4 text-muted-foreground leading-relaxed"></p>
+                    </div>
+                    <div class="flex items-center justify-between border-t pt-6">
+                        <div class="text-primary font-semibold" id="jobBudget"></div>
+                        <div class="text-sm text-muted-foreground" id="jobDuration"></div>
+                    </div>
+                    <div class="border-t pt-6">
+                        <h3 class="text-sm font-medium mb-3">Required Skills</h3>
+                        <div class="flex flex-wrap gap-2" id="jobSkills">
+                            <!-- Skills will be inserted here -->
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <form id="applicationForm" class="application-form">
-                <h2>Apply for this Position</h2>
-                
-                <div class="form-group">
-                    <label for="coverLetter">Cover Letter</label>
-                    <textarea id="coverLetter" name="coverLetter" rows="6" required
-                        placeholder="Introduce yourself and explain why you're the perfect fit for this job..."></textarea>
+            <!-- Application Form -->
+            <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
+                <div class="p-6">
+                    <h2 class="text-xl font-semibold mb-6">Submit Your Proposal</h2>
+                    <div id="errorContainer" class="hidden rounded-lg border border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive mb-6">
+                        <!-- Error messages will be inserted here -->
+                    </div>
+                    <form id="applicationForm" class="space-y-6">
+                        <div class="space-y-2">
+                            <label for="coverLetter" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Cover Letter
+                            </label>
+                            <textarea
+                                id="coverLetter"
+                                class="flex min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                placeholder="Introduce yourself and explain why you're the best fit for this job..."
+                                required
+                            ></textarea>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="bid" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Your Bid (USD)
+                            </label>
+                            <input
+                                id="bid"
+                                type="number"
+                                min="1"
+                                step="1"
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                placeholder="Enter your bid amount"
+                                required
+                            />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="timeframe" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Estimated Timeframe
+                            </label>
+                            <div class="grid grid-cols-2 gap-4">
+                                <input
+                                    id="timeframe"
+                                    type="number"
+                                    min="1"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    placeholder="Enter number"
+                                    required
+                                />
+                                <select
+                                    id="timeframeUnit"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
+                                >
+                                    <option value="days">Days</option>
+                                    <option value="weeks">Weeks</option>
+                                    <option value="months">Months</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="attachments" class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                Attachments (Optional)
+                            </label>
+                            <input
+                                id="attachments"
+                                type="file"
+                                multiple
+                                class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                accept=".pdf,.doc,.docx,.txt"
+                            />
+                            <p class="text-xs text-muted-foreground">Max 5 files. Supported formats: PDF, DOC, DOCX, TXT</p>
+                        </div>
+                        <button type="submit" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full">
+                            Submit Proposal
+                        </button>
+                    </form>
                 </div>
-
-                <div class="form-group">
-                    <label for="proposedRate">Your Proposed Rate (if different from budget)</label>
-                    <input type="number" id="proposedRate" name="proposedRate" placeholder="Enter your proposed rate">
-                </div>
-
-                <div class="form-group">
-                    <label for="availability">Availability</label>
-                    <select id="availability" name="availability" required>
-                        <option value="">Select your availability</option>
-                        <option value="immediate">Immediate</option>
-                        <option value="1week">Within 1 week</option>
-                        <option value="2weeks">Within 2 weeks</option>
-                        <option value="custom">Custom (specify in cover letter)</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-primary">Submit Application</button>
-                <a href="javascript:history.back()" class="btn-secondary">Cancel</a>
-            </form>
+            </div>
         </div>
     </main>
 
-    <script src="js/auth.js"></script>
+    <script src="js/storage.js"></script>
     <script>
-        // Get job ID from URL parameters
+        // Get job ID from URL
         const urlParams = new URLSearchParams(window.location.search);
         const jobId = urlParams.get('jobId');
 
         // Load job details
-        function loadJobDetails() {
-            const jobs = JSON.parse(localStorage.getItem('jobs') || '[]');
-            // Convert jobId to number for comparison since IDs from URL are strings
-            const job = jobs.find(j => j.id === parseInt(jobId));
-            
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get job data from storage
+            const storageService = new StorageService();
+            const job = storageService.getJobById(jobId);
+
             if (!job) {
-                window.location.href = 'dashboard.html';
+                window.location.href = 'jobs.html';
                 return;
             }
 
-            const jobDetails = document.getElementById('jobDetails');
-            jobDetails.innerHTML = `
-                <h3>${job.title}</h3>
-                <p>${job.description}</p>
-                <p class="budget">Budget: $${job.budget}</p>
-                <p>Posted by: ${job.clientName}</p>
-                <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
-            `;
-        }
+            // Fill job details
+            document.getElementById('jobCategory').textContent = job.category;
+            document.getElementById('jobPostedAt').textContent = job.postedAt;
+            document.getElementById('jobTitle').textContent = job.title;
+            document.getElementById('jobDescription').textContent = job.description;
+            document.getElementById('jobBudget').textContent = job.budget;
+            document.getElementById('jobDuration').textContent = job.duration;
 
-        // Handle form submission
-        document.getElementById('applicationForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = {
-                jobId: parseInt(jobId),
-                coverLetter: document.getElementById('coverLetter').value,
-                proposedRate: document.getElementById('proposedRate').value,
-                availability: document.getElementById('availability').value,
-                applicantId: getCurrentUser().id,
-                applicationDate: new Date().toISOString(),
-                status: 'pending'
-            };
-
-            // Get existing applications or initialize empty array
-            const applications = JSON.parse(localStorage.getItem('applications') || '[]');
-            
-            // Check if user has already applied (use parseInt for comparison)
-            if (applications.some(app => app.jobId === parseInt(jobId) && app.applicantId === formData.applicantId)) {
-                alert('You have already applied for this job');
-                return;
-            }
-
-            // Add new application
-            applications.push(formData);
-            localStorage.setItem('applications', JSON.stringify(applications));
-
-            alert('Your application has been submitted successfully!');
-            window.location.href = 'dashboard.html';
+            // Fill skills
+            const skillsContainer = document.getElementById('jobSkills');
+            job.skills.forEach(skill => {
+                const skillBadge = document.createElement('span');
+                skillBadge.className = 'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary/10 text-secondary-foreground hover:bg-secondary/20';
+                skillBadge.textContent = skill;
+                skillsContainer.appendChild(skillBadge);
+            });
         });
 
-        // Check if user is logged in
-        const currentUser = getCurrentUser();
-        if (!currentUser) {
-            window.location.href = 'auth/login.html';
-        } else if (currentUser.role !== 'freelancer') {
-            window.location.href = 'dashboard.html';
-        }
+        // Handle form submission
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = '';
+            errorContainer.classList.add('hidden');
 
-        // Load job details when page loads
-        loadJobDetails();
+            // Get form values
+            const formData = {
+                jobId: jobId,
+                coverLetter: document.getElementById('coverLetter').value,
+                bid: document.getElementById('bid').value,
+                timeframe: document.getElementById('timeframe').value,
+                timeframeUnit: document.getElementById('timeframeUnit').value,
+                attachments: document.getElementById('attachments').files
+            };
+
+            // Validate form
+            const errors = [];
+            if (formData.coverLetter.length < 100) {
+                errors.push('Cover letter must be at least 100 characters long');
+            }
+            if (formData.bid < 1) {
+                errors.push('Bid amount must be greater than 0');
+            }
+            if (formData.timeframe < 1) {
+                errors.push('Timeframe must be greater than 0');
+            }
+            if (formData.attachments.length > 5) {
+                errors.push('Maximum 5 files allowed');
+            }
+
+            // Show errors if any
+            if (errors.length > 0) {
+                errorContainer.innerHTML = errors.map(error => `<p>${error}</p>`).join('');
+                errorContainer.classList.remove('hidden');
+                return;
+            }
+
+            // Here you would typically make an API call to submit the proposal
+            console.log('Proposal submission:', formData);
+            
+            // For demo purposes, show success message and redirect
+            alert('Your proposal has been submitted successfully!');
+            window.location.href = 'jobs.html';
+        });
     </script>
 </body>
 </html> 

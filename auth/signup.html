@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,86 +9,268 @@
     <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
     <link rel="manifest" href="../favicon/site.webmanifest">
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/output.css">
 </head>
-<body>
-    <nav id="mainNav">
-        <div class="nav-content">
-            <h1><a href="../index.html">FreelanceHub</a></h1>
+<body class="min-h-screen bg-background font-sans antialiased">
+    <!-- Mobile Navigation -->
+    <div class="lg:hidden">
+        <div class="flex items-center justify-between p-4 border-b">
+            <a href="../index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                <span class="font-bold">FreelanceHub</span>
+            </a>
+            <a href="../index.html" class="text-sm text-muted-foreground hover:text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </a>
         </div>
-    </nav>
+    </div>
 
-    <main class="container">
-        <div class="auth-form">
-            <h2>Create Account</h2>
-            <form id="signupForm">
-                <div class="form-group">
-                    <label for="name">Full Name</label>
-                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" placeholder="Choose a password" required>
-                </div>
-                <div class="form-group">
-                    <label for="roleSelect">I want to...</label>
-                    <select name="role" id="roleSelect" required>
-                        <option value="">Select Role</option>
-                        <option value="client">Hire Talent</option>
-                        <option value="freelancer">Work as Freelancer</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-primary w-full">Create Account</button>
-            </form>
-            <p class="auth-links">
-                Already have an account? <a href="login.html">Login</a>
-            </p>
+    <div class="container relative min-h-[calc(100vh-65px)] lg:min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+        <div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+            <div class="absolute inset-0 bg-primary"></div>
+            <div class="relative z-20 flex items-center text-lg font-medium">
+                <a href="../index.html" class="flex items-center gap-2 text-primary-foreground hover:text-primary-foreground/90">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                    FreelanceHub
+                </a>
+            </div>
+            <div class="relative z-20 mt-auto">
+                <blockquote class="space-y-2">
+                    <p class="text-lg text-primary-foreground/90">
+                        "Joining FreelanceHub was the best career decision I've made. The platform connects me with amazing clients and projects."
+                    </p>
+                    <footer class="text-sm text-primary-foreground/70">Michael Rodriguez, Full Stack Developer</footer>
+                </blockquote>
+            </div>
         </div>
-    </main>
+        <div class="p-8">
+            <div class="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
+                <div class="flex flex-col space-y-2 text-center">
+                    <h1 class="text-2xl font-semibold tracking-tight">Create your account</h1>
+                    <p class="text-sm text-muted-foreground">
+                        Enter your details below to get started
+                    </p>
+                </div>
+                <div id="errorContainer" class="hidden rounded-lg border border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive">
+                    <!-- Error messages will be inserted here -->
+                </div>
+                <div class="grid gap-6">
+                    <form id="signupForm" class="animate-in">
+                        <div class="grid gap-4">
+                            <div class="grid gap-2">
+                                <label for="role" class="text-sm font-medium leading-none">
+                                    I want to
+                                </label>
+                                <select
+                                    id="role"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
+                                >
+                                    <option value="">Select your role</option>
+                                    <option value="freelancer">Find Work (I'm a Freelancer)</option>
+                                    <option value="client">Hire Talent (I'm a Client)</option>
+                                </select>
+                            </div>
+                            <div class="grid gap-2">
+                                <label for="name" class="text-sm font-medium leading-none">
+                                    Full Name
+                                </label>
+                                <input
+                                    id="name"
+                                    type="text"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    placeholder="John Doe"
+                                    required
+                                    minlength="2"
+                                />
+                            </div>
+                            <div class="grid gap-2">
+                                <label for="email" class="text-sm font-medium leading-none">
+                                    Email
+                                </label>
+                                <input
+                                    id="email"
+                                    type="email"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    placeholder="name@example.com"
+                                    required
+                                />
+                            </div>
+                            <div class="grid gap-2">
+                                <label for="password" class="text-sm font-medium leading-none">
+                                    Password
+                                </label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
+                                    minlength="8"
+                                />
+                                <p class="text-xs text-muted-foreground">Must be at least 8 characters long</p>
+                            </div>
+                            <div class="grid gap-2">
+                                <label for="confirmPassword" class="text-sm font-medium leading-none">
+                                    Confirm Password
+                                </label>
+                                <input
+                                    id="confirmPassword"
+                                    type="password"
+                                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                    required
+                                />
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input
+                                    id="terms"
+                                    type="checkbox"
+                                    class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
+                                    required
+                                />
+                                <label for="terms" class="text-sm text-muted-foreground">
+                                    I agree to the
+                                    <a href="#" class="text-primary hover:text-primary/90">terms of service</a>
+                                    and
+                                    <a href="#" class="text-primary hover:text-primary/90">privacy policy</a>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn-primary w-full">
+                                Create Account
+                            </button>
+                        </div>
+                    </form>
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <span class="w-full border-t"></span>
+                        </div>
+                        <div class="relative flex justify-center text-xs uppercase">
+                            <span class="bg-background px-2 text-muted-foreground">Or continue with</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <button class="btn-secondary inline-flex items-center justify-center gap-2 hover:bg-muted">
+                            <svg role="img" viewBox="0 0 24 24" class="h-4 w-4">
+                                <path
+                                    fill="currentColor"
+                                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
+                                />
+                            </svg>
+                            Google
+                        </button>
+                        <button class="btn-secondary inline-flex items-center justify-center gap-2 hover:bg-muted">
+                            <svg role="img" viewBox="0 0 24 24" class="h-4 w-4">
+                                <path
+                                    fill="currentColor"
+                                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
+                                />
+                            </svg>
+                            Facebook
+                        </button>
+                    </div>
+                </div>
+                <p class="px-8 text-center text-sm text-muted-foreground">
+                    Already have an account?{" "}
+                    <a href="login.html" class="underline underline-offset-4 hover:text-primary">
+                        Sign in
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
 
     <script src="../js/storage.js"></script>
-    <script src="../js/auth.js"></script>
-    <script src="../js/validation.js"></script>
     <script>
-        // Set the role based on URL parameter
-        document.addEventListener('DOMContentLoaded', () => {
+        // Initialize storage service
+        const storageService = new StorageService();
+        
+        // Add sample data for testing if no users exist
+        const users = storageService.getUsers();
+        console.log('Current users:', users);
+        
+        if (users.length === 0) {
+            console.log('No users found, adding sample data...');
+            storageService.addSampleData();
+            console.log('Sample data added, users:', storageService.getUsers());
+        }
+
+        // Pre-fill role if specified in URL
+        document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const role = urlParams.get('role');
             if (role) {
-                document.getElementById('roleSelect').value = role;
+                document.getElementById('role').value = role;
             }
         });
 
-        // Handle form submission
-        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            const userData = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                password: formData.get('password'),
-                role: formData.get('role')
+            const errorContainer = document.getElementById('errorContainer');
+            errorContainer.innerHTML = '';
+            errorContainer.classList.add('hidden');
+
+            // Get form values
+            const formData = {
+                role: document.getElementById('role').value,
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value,
+                confirmPassword: document.getElementById('confirmPassword').value,
+                terms: document.getElementById('terms').checked
             };
 
-            // Validate form data
-            const errors = FormValidator.validateRegistration(formData);
+            console.log('Signup attempt with:', formData.email);
+
+            // Validate form
+            const errors = [];
+            if (!formData.role) {
+                errors.push('Please select your role');
+            }
+            if (formData.name.length < 2) {
+                errors.push('Name must be at least 2 characters long');
+            }
+            if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errors.push('Please enter a valid email address');
+            }
+            if (formData.password.length < 8) {
+                errors.push('Password must be at least 8 characters long');
+            }
+            if (formData.password !== formData.confirmPassword) {
+                errors.push('Passwords do not match');
+            }
+            if (!formData.terms) {
+                errors.push('Please accept the terms and conditions');
+            }
+
+            // Show errors if any
             if (errors.length > 0) {
-                alert(errors.join('\n'));
+                errorContainer.innerHTML = errors.map(error => `<p>${error}</p>`).join('');
+                errorContainer.classList.remove('hidden');
                 return;
             }
 
             try {
-                const authService = new AuthService(new StorageService());
-                await authService.register(userData);
-                window.location.href = '../dashboard.html';
+                // Attempt to register
+                const user = storageService.register({
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password,
+                    role: formData.role,
+                    skills: [],
+                    avatar: null
+                });
+                
+                console.log('Registration successful:', user);
+
+                // Log the user in
+                const loggedInUser = storageService.login(formData.email, formData.password);
+                if (loggedInUser) {
+                    console.log('Auto-login successful, redirecting to dashboard...');
+                    window.location.href = '../dashboard.html';
+                }
             } catch (error) {
-                alert(error.message);
+                console.error('Registration failed:', error);
+                errorContainer.innerHTML = `<p>${error.message}</p>`;
+                errorContainer.classList.remove('hidden');
             }
         });
     </script>

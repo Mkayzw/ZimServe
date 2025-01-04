@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,316 +9,292 @@
     <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
     <link rel="manifest" href="favicon/site.webmanifest">
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .messages-layout {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            height: calc(100vh - 64px);
-            background: white;
-        }
-        .conversation-list {
-            border-right: 1px solid #e5e7eb;
-            overflow-y: auto;
-        }
-        .conversation-item {
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .conversation-item:hover {
-            background-color: #f9fafb;
-        }
-        .conversation-item.active {
-            background-color: #f3f4f6;
-        }
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .chat-header {
-            padding: 1rem;
-            border-bottom: 1px solid #e5e7eb;
-            background: white;
-        }
-        .message-list {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            background: #f9fafb;
-        }
-        .message-bubble {
-            max-width: 70%;
-            margin-bottom: 1rem;
-            padding: 0.75rem 1rem;
-            border-radius: 1rem;
-            position: relative;
-        }
-        .message-bubble.sent {
-            background: #3b82f6;
-            color: white;
-            margin-left: auto;
-            border-bottom-right-radius: 0.25rem;
-        }
-        .message-bubble.received {
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-bottom-left-radius: 0.25rem;
-        }
-        .message-input {
-            padding: 1rem;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-        }
-        .message-input-container {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .message-input input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 0.5rem;
-            outline: none;
-        }
-        .message-input input:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
-        }
-        .typing-indicator {
-            padding: 0.5rem;
-            color: #6b7280;
-            font-size: 0.875rem;
-            font-style: italic;
-        }
-        .message-status {
-            font-size: 0.75rem;
-            margin-top: 0.25rem;
-            color: #9ca3af;
-        }
-        .unread-badge {
-            background: #3b82f6;
-            color: white;
-            border-radius: 9999px;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/output.css">
 </head>
-<body>
-    <nav id="mainNav">
-        <div class="nav-content">
-            <h1>FreelanceHub</h1>
-            <div id="navLinks"></div>
+<body class="min-h-screen bg-background font-sans antialiased">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div class="container flex h-16 items-center justify-between">
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold">
+                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        FreelanceHub
+                    </a>
+                </h1>
+                <nav class="hidden md:flex gap-6">
+                    <a href="dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Dashboard</a>
+                    <a href="jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Earnings</a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <button class="inline-flex items-center justify-center rounded-md w-8 h-8 text-sm font-medium hover:bg-accent hover:text-accent-foreground">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                    <span class="sr-only">Notifications</span>
+                </button>
+                <div class="flex items-center gap-4">
+                    <a href="profile.html" class="inline-flex items-center justify-center text-sm font-medium hover:text-primary">
+                        <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
+                            <img id="userAvatar" class="aspect-square h-full w-full" alt="User Avatar" />
+                        </span>
+                    </a>
+                    <button onclick="handleLogout()" class="text-sm font-medium text-muted-foreground hover:text-primary">Logout</button>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <main class="messages-layout">
-        <!-- Conversation List -->
-        <div class="conversation-list" id="conversationList">
-            <!-- Conversations will be populated here -->
-        </div>
+    <main class="container py-8">
+        <div class="flex flex-col gap-8">
+            <div>
+                <h1 class="text-3xl font-bold tracking-tight mb-2">Messages</h1>
+                <p class="text-muted-foreground">Communicate with your clients and team members.</p>
+            </div>
 
-        <!-- Chat Area -->
-        <div class="chat-container">
-            <!-- Chat Header -->
-            <div class="chat-header">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-semibold" id="chatTitle">Select a conversation</h2>
-                        <p class="text-sm text-gray-500" id="jobTitle"></p>
+            <div class="grid gap-6 md:grid-cols-[300px_1fr] h-[calc(100vh-16rem)]">
+                <!-- Message List -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col">
+                    <div class="p-4 border-b">
+                        <input type="text" 
+                               placeholder="Search messages..." 
+                               class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                               onkeyup="filterMessages(this.value)">
                     </div>
-                    <div class="online-status text-sm text-gray-500" id="onlineStatus"></div>
+                    <div class="divide-y overflow-y-auto" id="messageList">
+                        <!-- Message threads will be inserted here -->
+                        <div class="flex items-center p-4">
+                            <p class="text-sm text-muted-foreground">No messages yet.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Message List -->
-            <div class="message-list" id="messageList">
-                <!-- Messages will be populated here -->
-            </div>
+                <!-- Message Content -->
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b flex items-center gap-4" id="chatHeader">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold" id="chatName">No conversation selected</h3>
+                            <p class="text-sm text-muted-foreground" id="chatStatus"></p>
+                        </div>
+                    </div>
 
-            <!-- Typing Indicator -->
-            <div class="typing-indicator hidden" id="typingIndicator">
-                Someone is typing...
-            </div>
+                    <!-- Messages Area -->
+                    <div class="flex-1 overflow-y-auto p-4 space-y-4" id="messagesArea">
+                        <div class="flex items-center justify-center h-full text-center text-muted-foreground">
+                            <div class="space-y-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                <h3 class="font-medium">No conversation selected</h3>
+                                <p class="text-sm">Choose a conversation from the list to start messaging</p>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Message Input -->
-            <div class="message-input">
-                <div class="message-input-container">
-                    <input type="text" id="messageInput" placeholder="Type a message..." disabled>
-                    <button id="sendButton" class="btn-primary" disabled>
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+                    <!-- Message Input -->
+                    <div class="p-4 border-t" id="messageInputArea" style="display: none;">
+                        <form onsubmit="sendMessage(event)" class="flex gap-2">
+                            <input type="text" 
+                                   id="messageInput"
+                                   placeholder="Type your message..." 
+                                   class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                            <button type="submit" 
+                                    class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+                                Send
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <script src="js/storage.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/messaging.js"></script>
     <script>
-        // Initialize services
+        // Check authentication
         const storageService = new StorageService();
-        const authService = new AuthService(storageService);
-        const messageService = new MessageService(storageService);
+        const currentUser = storageService.getCurrentUser();
+        let activeConversation = null;
 
-        // Get current user
-        const currentUser = authService.getCurrentUser();
+        // Redirect to login if not authenticated
         if (!currentUser) {
             window.location.href = 'auth/login.html';
         }
 
-        messageService.setCurrentUser(currentUser);
+        // Update user avatar
+        document.getElementById('userAvatar').src = currentUser?.avatar || 'images/default-avatar.png';
 
-        // DOM elements
-        const conversationList = document.getElementById('conversationList');
-        const messageList = document.getElementById('messageList');
-        const messageInput = document.getElementById('messageInput');
-        const sendButton = document.getElementById('sendButton');
-        const chatTitle = document.getElementById('chatTitle');
-        const jobTitle = document.getElementById('jobTitle');
-        const typingIndicator = document.getElementById('typingIndicator');
+        // Handle logout
+        function handleLogout() {
+            storageService.logout();
+            window.location.href = 'index.html';
+        }
 
-        // Load conversations
-        function loadConversations() {
-            const conversations = messageService.getConversations();
-            conversationList.innerHTML = conversations.map(conv => {
-                const otherUser = conv.participants.find(id => id !== currentUser.id);
-                const unreadCount = messageService.getMessages()
-                    .filter(m => m.receiverId === currentUser.id && !m.read && 
-                            m.senderId === otherUser && m.jobId === conv.jobId).length;
-                
-                return `
-                    <div class="conversation-item" data-user-id="${otherUser}" data-job-id="${conv.jobId}">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h3 class="font-semibold">${otherUser}</h3>
-                                <p class="text-sm text-gray-500">${conv.lastMessage.content}</p>
+        // Load messages
+        function loadMessages() {
+            const messages = storageService.getMessagesByUserId(currentUser.id);
+            const messageList = document.getElementById('messageList');
+
+            if (messages.length > 0) {
+                messageList.innerHTML = messages.map(message => `
+                    <div class="flex items-center gap-4 p-4 hover:bg-accent/50 cursor-pointer ${message.conversationId === activeConversation?.id ? 'bg-accent' : ''}"
+                         onclick="openConversation('${message.conversationId}')">
+                        <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                             alt="Sender" 
+                             class="w-10 h-10 rounded-full">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium truncate">${message.senderName}</p>
+                                <span class="text-xs text-muted-foreground">${formatRelativeDate(message.timestamp)}</span>
                             </div>
-                            ${unreadCount > 0 ? `<span class="unread-badge">${unreadCount}</span>` : ''}
+                            <p class="text-sm text-muted-foreground truncate">${message.lastMessage}</p>
+                        </div>
+                        ${message.unreadCount ? `
+                            <span class="inline-flex items-center justify-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+                                ${message.unreadCount}
+                            </span>
+                        ` : ''}
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Open conversation
+        function openConversation(conversationId) {
+            activeConversation = storageService.getConversationById(conversationId);
+            if (!activeConversation) return;
+
+            // Update header
+            document.getElementById('chatName').textContent = activeConversation.name;
+            document.getElementById('chatStatus').textContent = activeConversation.status || 'Active';
+
+            // Show message input
+            document.getElementById('messageInputArea').style.display = 'block';
+
+            // Load conversation messages
+            const messages = storageService.getConversationMessages(conversationId);
+            const messagesArea = document.getElementById('messagesArea');
+            
+            if (messages.length > 0) {
+                messagesArea.innerHTML = messages.map(message => `
+                    <div class="flex ${message.senderId === currentUser.id ? 'justify-end' : 'justify-start'}">
+                        <div class="flex flex-col gap-1 max-w-[70%]">
+                            <div class="flex items-center gap-2 ${message.senderId === currentUser.id ? 'flex-row-reverse' : ''}">
+                                <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                                     alt="${message.senderName}" 
+                                     class="w-6 h-6 rounded-full">
+                                <span class="text-sm font-medium">${message.senderName}</span>
+                            </div>
+                            <div class="${message.senderId === currentUser.id ? 
+                                'bg-primary text-primary-foreground' : 
+                                'bg-muted'} rounded-lg p-3">
+                                <p class="text-sm">${message.content}</p>
+                            </div>
+                            <span class="text-xs text-muted-foreground ${message.senderId === currentUser.id ? 'text-right' : ''}">
+                                ${formatRelativeDate(message.timestamp)}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+                messagesArea.scrollTop = messagesArea.scrollHeight;
+            } else {
+                messagesArea.innerHTML = `
+                    <div class="flex items-center justify-center h-full text-center text-muted-foreground">
+                        <div class="space-y-2">
+                            <p class="text-sm">No messages yet</p>
+                            <p class="text-xs">Be the first to send a message!</p>
                         </div>
                     </div>
                 `;
-            }).join('');
+            }
+
+            // Mark messages as read
+            storageService.markConversationAsRead(conversationId, currentUser.id);
+            loadMessages(); // Refresh message list to update unread counts
         }
 
-        // Load messages for a conversation
-        function loadMessages(userId, jobId) {
-            const messages = messageService.getConversation(currentUser.id, userId, jobId);
-            messageList.innerHTML = messages.map(msg => {
-                const isSent = msg.senderId === currentUser.id;
-                return `
-                    <div class="message-bubble ${isSent ? 'sent' : 'received'}">
-                        <div class="message-content">${msg.content}</div>
-                        <div class="message-status">
-                            ${new Date(msg.timestamp).toLocaleTimeString()} · 
-                            ${isSent ? (msg.delivered ? 'Delivered' : 'Sent') : ''}
+        // Send message
+        function sendMessage(event) {
+            event.preventDefault();
+            if (!activeConversation) return;
+
+            const input = document.getElementById('messageInput');
+            const content = input.value.trim();
+            if (!content) return;
+
+            const message = storageService.sendMessage({
+                conversationId: activeConversation.id,
+                senderId: currentUser.id,
+                content: content,
+                timestamp: new Date().toISOString()
+            });
+
+            input.value = '';
+            openConversation(activeConversation.id); // Refresh conversation
+            loadMessages(); // Refresh message list
+        }
+
+        // Filter messages
+        function filterMessages(query) {
+            const messages = storageService.getMessagesByUserId(currentUser.id);
+            const filteredMessages = messages.filter(message => 
+                message.senderName.toLowerCase().includes(query.toLowerCase()) ||
+                message.lastMessage.toLowerCase().includes(query.toLowerCase())
+            );
+
+            const messageList = document.getElementById('messageList');
+            if (filteredMessages.length > 0) {
+                messageList.innerHTML = filteredMessages.map(message => `
+                    <div class="flex items-center gap-4 p-4 hover:bg-accent/50 cursor-pointer ${message.conversationId === activeConversation?.id ? 'bg-accent' : ''}"
+                         onclick="openConversation('${message.conversationId}')">
+                        <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                             alt="Sender" 
+                             class="w-10 h-10 rounded-full">
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between">
+                                <p class="text-sm font-medium truncate">${message.senderName}</p>
+                                <span class="text-xs text-muted-foreground">${formatRelativeDate(message.timestamp)}</span>
+                            </div>
+                            <p class="text-sm text-muted-foreground truncate">${message.lastMessage}</p>
                         </div>
+                        ${message.unreadCount ? `
+                            <span class="inline-flex items-center justify-center rounded-full bg-primary px-2.5 py-0.5 text-xs font-medium text-primary-foreground">
+                                ${message.unreadCount}
+                            </span>
+                        ` : ''}
+                    </div>
+                `).join('');
+            } else {
+                messageList.innerHTML = `
+                    <div class="flex items-center p-4">
+                        <p class="text-sm text-muted-foreground">No messages found.</p>
                     </div>
                 `;
-            }).join('');
-            messageList.scrollTop = messageList.scrollHeight;
-        }
-
-        // Handle conversation selection
-        conversationList.addEventListener('click', (e) => {
-            const item = e.target.closest('.conversation-item');
-            if (item) {
-                // Remove active class from all items
-                document.querySelectorAll('.conversation-item').forEach(i => i.classList.remove('active'));
-                // Add active class to selected item
-                item.classList.add('active');
-
-                const userId = item.dataset.userId;
-                const jobId = item.dataset.jobId;
-                
-                messageService.setActiveConversation(userId, jobId);
-                loadMessages(userId, jobId);
-                
-                // Enable input
-                messageInput.disabled = false;
-                sendButton.disabled = false;
-                
-                // Update header
-                chatTitle.textContent = `Chat with ${userId}`;
-                // You would typically get the job title from your job service
-                jobTitle.textContent = `Job: ${jobId}`;
-            }
-        });
-
-        // Handle message sending
-        let typingTimeout;
-        messageInput.addEventListener('input', () => {
-            if (messageService.activeConversation) {
-                clearTimeout(typingTimeout);
-                // Simulate typing indicator
-                typingIndicator.classList.remove('hidden');
-                typingTimeout = setTimeout(() => {
-                    typingIndicator.classList.add('hidden');
-                }, 1000);
-            }
-        });
-
-        messageInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                sendMessage();
-            }
-        });
-
-        sendButton.addEventListener('click', sendMessage);
-
-        async function sendMessage() {
-            if (!messageInput.value.trim() || !messageService.activeConversation) return;
-
-            try {
-                const message = await messageService.sendMessage({
-                    senderId: currentUser.id,
-                    receiverId: messageService.activeConversation.userId,
-                    jobId: messageService.activeConversation.jobId,
-                    content: messageInput.value
-                });
-
-                // Clear input
-                messageInput.value = '';
-                
-                // Reload messages
-                loadMessages(messageService.activeConversation.userId, messageService.activeConversation.jobId);
-                
-                // Update conversation list
-                loadConversations();
-            } catch (error) {
-                console.error('Error sending message:', error);
-                alert('Failed to send message. Please try again.');
             }
         }
 
-        // Register for new message notifications
-        messageService.on('newMessage', (messages) => {
-            if (messageService.activeConversation) {
-                const activeMessages = messages.filter(m => 
-                    m.senderId === messageService.activeConversation.userId &&
-                    m.jobId === messageService.activeConversation.jobId
-                );
-                if (activeMessages.length > 0) {
-                    loadMessages(messageService.activeConversation.userId, messageService.activeConversation.jobId);
+        function formatRelativeDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                if (diffHours === 0) {
+                    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                    return `${diffMinutes}m`;
                 }
+                return `${diffHours}h`;
             }
-            loadConversations();
-        });
-
-        // Request notification permission
-        if ('Notification' in window) {
-            Notification.requestPermission();
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays}d`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)}w`;
+            if (diffDays < 365) return `${Math.floor(diffDays / 30)}mo`;
+            return `${Math.floor(diffDays / 365)}y`;
         }
 
         // Initial load
-        loadConversations();
+        loadMessages();
     </script>
 </body>
 </html> 

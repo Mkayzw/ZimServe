@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,50 +9,24 @@
     <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
     <link rel="manifest" href="favicon/site.webmanifest">
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .jobs-container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1.5rem;
-        }
-        .jobs-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid var(--border);
-        }
-        .jobs-header h2 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-        .freelancer-cta {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(to bottom right, rgba(37, 99, 235, 0.1), rgba(14, 165, 233, 0.1));
-            border-radius: var(--radius);
-            margin-bottom: 2rem;
-        }
-        .freelancer-cta h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-        .freelancer-cta p {
-            color: var(--secondary);
-            margin-bottom: 1.5rem;
-        }
-    </style>
+    <link rel="stylesheet" href="css/output.css">
 </head>
-<body>
+<body class="min-h-screen bg-background font-sans antialiased">
     <nav id="mainNav">
         <div class="nav-content">
-            <h1><a href="index.html">FreelanceHub</a></h1>
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold">
+                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        FreelanceHub
+                    </a>
+                </h1>
+                <nav class="hidden md:flex gap-6">
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
+                </nav>
+            </div>
             <div class="nav-links">
                 <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
                 <a href="auth/login.html" class="btn-secondary">Login</a>
@@ -60,118 +34,199 @@
         </div>
     </nav>
 
-    <div class="jobs-container">
-        <div class="freelancer-cta">
-            <h3>Ready to start freelancing?</h3>
-            <p>Sign up as a freelancer to apply for these jobs and start your freelancing journey today!</p>
+    <main class="container py-8">
+        <div class="rounded-xl border bg-card text-card-foreground shadow-sm p-8 mb-8 bg-gradient-to-br from-blue-50 to-indigo-50">
+            <div class="max-w-2xl">
+                <h3 class="text-2xl font-semibold mb-4 text-primary">Ready to start freelancing?</h3>
+                <p class="text-muted-foreground mb-6">Join thousands of freelancers who have found success on our platform. Sign up today to start bidding on projects and building your freelance career.</p>
+                <div class="flex gap-4">
             <a href="auth/signup.html?role=freelancer" class="btn-primary">Sign Up as Freelancer</a>
+                    <a href="#" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
         </div>
 
-        <div class="jobs-header">
-            <h2>Available Jobs</h2>
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h2 class="text-3xl font-bold tracking-tight mb-2">Available Jobs</h2>
+                <p class="text-muted-foreground">Browse our latest opportunities and find your next project.</p>
+            </div>
+            <div class="flex gap-4">
+                <select class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                    <option>All Categories</option>
+                    <option>Web Development</option>
+                    <option>Design</option>
+                    <option>Writing</option>
+                </select>
+                <select class="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+                    <option>Sort by: Latest</option>
+                    <option>Budget: High to Low</option>
+                    <option>Budget: Low to High</option>
+                </select>
+            </div>
         </div>
 
-        <div id="availableJobs"></div>
-    </div>
+        <div id="availableJobs" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Job cards will be inserted here -->
+        </div>
+    </main>
+
+    <footer class="footer mt-auto">
+        <div class="footer-content">
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold">FreelanceHub</h3>
+                <p class="text-sm text-muted-foreground">Connecting talent with opportunity.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">For Freelancers</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Work</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Create Profile</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Success Stories</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">For Clients</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Post a Job</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Freelancers</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Enterprise</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">Resources</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Help Center</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Blog</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Community</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">Company</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">About Us</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Careers</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Contact</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script src="js/storage.js"></script>
     <script>
-        // Placeholder jobs data
-        const placeholderJobs = [
-            {
-                id: 1,
-                title: "Full Stack Web Application Development",
-                description: "Looking for an experienced developer to build a modern web application using React and Node.js. The project includes user authentication, database integration, and real-time features.",
-                budget: 5000,
-                clientName: "TechCorp Solutions",
-                createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // 2 days ago
-                status: "open"
-            },
-            {
-                id: 2,
-                title: "Mobile App UI/UX Design",
-                description: "Need a talented designer to create a modern and intuitive user interface for our iOS/Android fitness tracking app. Experience with Figma and mobile design patterns required.",
-                budget: 3000,
-                clientName: "FitTech Innovations",
-                createdAt: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
-                status: "open"
-            },
-            {
-                id: 3,
-                title: "WordPress E-commerce Website",
-                description: "Seeking a WordPress expert to build an e-commerce website for a fashion boutique. Must include product catalog, shopping cart, and payment integration with Stripe.",
-                budget: 2500,
-                clientName: "Fashion Forward",
-                createdAt: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(), // 12 hours ago
-                status: "open"
-            },
-            {
-                id: 4,
-                title: "Python Data Analysis Script",
-                description: "Need a Python developer to create scripts for analyzing large datasets of customer behavior. Experience with pandas, numpy, and data visualization required.",
-                budget: 1800,
-                clientName: "DataMetrics Inc",
-                createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), // 6 hours ago
-                status: "open"
-            },
-            {
-                id: 5,
-                title: "Logo and Brand Identity Design",
-                description: "Looking for a creative designer to develop a complete brand identity including logo, color palette, and brand guidelines for a new tech startup.",
-                budget: 1500,
-                clientName: "StartUp Ventures",
-                createdAt: new Date().toISOString(), // Just now
-                status: "open"
-            }
-        ];
+        // Initialize storage service
+        const storageService = new StorageService();
+        const currentUser = storageService.getCurrentUser();
 
-        class PublicJobsView {
-            constructor(storageService) {
-                this.storage = storageService;
-                this.initializePlaceholderJobs();
-            }
-
-            initializePlaceholderJobs() {
-                const existingJobs = this.storage.getJobs();
-                if (existingJobs.length === 0) {
-                    placeholderJobs.forEach(job => {
-                        this.storage.createJob(job);
-                    });
-                }
-            }
-
-            loadJobs() {
-                const jobs = this.storage.getJobs()
-                    .filter(job => job.status === 'open')
-                    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                
-                const jobsContainer = document.getElementById('availableJobs');
-                
-                if (jobs.length === 0) {
-                    jobsContainer.innerHTML = '<p>No jobs available at the moment.</p>';
-                    return;
-                }
-
-                jobsContainer.innerHTML = jobs.map(job => `
-                    <div class="job-card">
-                        <h3>${job.title}</h3>
-                        <p>${job.description}</p>
-                        <p class="budget">Budget: $${job.budget}</p>
-                        <p>Posted by: ${job.clientName}</p>
-                        <p>Posted: ${new Date(job.createdAt).toLocaleDateString()}</p>
-                        <div class="job-actions">
-                            <a href="apply.html?jobId=${job.id}" class="btn-primary">Apply Now</a>
-                        </div>
-                    </div>
-                `).join('');
+        // Update navigation based on authentication status
+        function updateNavigation() {
+            const navLinks = document.querySelector('.nav-links');
+            if (currentUser) {
+                navLinks.innerHTML = `
+                    <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                    <button onclick="handleLogout()" class="btn-secondary">Logout</button>
+                `;
+            } else {
+                navLinks.innerHTML = `
+                    <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
+                    <a href="auth/login.html" class="btn-secondary">Login</a>
+                `;
             }
         }
 
-        // Initialize and load jobs when page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            const jobsView = new PublicJobsView(new StorageService());
-            jobsView.loadJobs();
+        function handleLogout() {
+            storageService.logout();
+            window.location.href = 'index.html';
+        }
+
+        // Get jobs from storage
+        const jobs = storageService.getJobs();
+
+        function createJobCard(job) {
+            const client = storageService.getUserById(job.clientId);
+            const proposals = storageService.getProposals().filter(p => p.jobId === job.id);
+            const hasApplied = currentUser && proposals.some(p => p.freelancerId === currentUser.id);
+            const isOwnJob = currentUser && job.clientId === currentUser.id;
+
+            // Determine if we should show the apply button
+            const showApplyButton = currentUser && currentUser.role === 'freelancer' && !isOwnJob;
+
+            return `
+                <div class="rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md transition-shadow">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">${job.category}</span>
+                            <span class="text-xs text-muted-foreground">${formatRelativeDate(job.postedAt)}</span>
+                        </div>
+                        <h3 class="text-lg font-semibold mb-2">${job.title}</h3>
+                        <p class="text-sm text-muted-foreground mb-4">${job.description}</p>
+                        <div class="text-primary font-semibold mb-4">$${job.budget.toLocaleString()}</div>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            ${job.skills.map(skill => `
+                                <span class="text-xs px-2.5 py-0.5 rounded-full bg-secondary text-secondary-foreground">${skill}</span>
+                            `).join('')}
+                        </div>
+                        <div class="border-t pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-clock"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                    ${job.duration}
+                                </span>
+                                <span class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    ${proposals.length} proposals
+                                </span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <img src="${client?.avatar || 'images/default-avatar.png'}" alt="${client?.name}" class="w-6 h-6 rounded-full">
+                                    <span class="text-sm text-muted-foreground">${client?.name || 'Unknown Client'}</span>
+                                </div>
+                                ${showApplyButton ? `
+                                    <a href="apply.html?jobId=${job.id}" 
+                                       class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 ${hasApplied ? 'opacity-50 cursor-not-allowed' : ''}"
+                                       ${hasApplied ? 'disabled' : ''}>
+                                        ${hasApplied ? 'Already Applied' : 'Apply Now'}
+                                    </a>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function formatRelativeDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+                if (diffHours === 0) {
+                    const diffMinutes = Math.floor(diffTime / (1000 * 60));
+                    return `${diffMinutes} minutes ago`;
+                }
+                return `${diffHours} hours ago`;
+            }
+            if (diffDays === 1) return 'Yesterday';
+            if (diffDays < 7) return `${diffDays} days ago`;
+            if (diffDays < 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+            if (diffDays < 365) return `${Math.floor(diffDays / 30)} months ago`;
+            return `${Math.floor(diffDays / 365)} years ago`;
+        }
+
+        // Display jobs
+        const jobsContainer = document.getElementById("availableJobs");
+        jobs.forEach(job => {
+            jobsContainer.innerHTML += createJobCard(job);
         });
+
+        // Update navigation
+        updateNavigation();
     </script>
 </body>
 </html> 

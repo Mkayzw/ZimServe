@@ -1,40 +1,153 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FreelanceHub - Find Work or Hire Talent</title>
+    <title>FreelanceHub - Find Top Freelancers & Projects</title>
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
     <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
     <link rel="manifest" href="favicon/site.webmanifest">
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/output.css">
 </head>
-<body>
+<body class="min-h-screen bg-background font-sans antialiased">
     <nav id="mainNav">
         <div class="nav-content">
-            <h1>FreelanceHub</h1>
+            <div class="flex items-center gap-6">
+                <h1 class="text-xl font-bold">
+                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        FreelanceHub
+                    </a>
+                </h1>
+                <nav class="hidden md:flex gap-6">
+                    <a href="jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
+                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
+                </nav>
+            </div>
             <div class="nav-links">
-                <a href="jobs.html" class="btn-secondary">Browse Jobs</a>
+                <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
                 <a href="auth/login.html" class="btn-secondary">Login</a>
-                <a href="auth/signup.html" class="btn-primary">Sign Up</a>
             </div>
         </div>
     </nav>
 
     <main>
-        <section class="hero">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden bg-background pt-16 md:pt-20 lg:pt-24">
+            <div class="container relative z-10">
+                <div class="mx-auto max-w-3xl text-center">
+                    <h1 class="mb-8 text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+                        Find the perfect <span class="text-primary">freelance</span> services for your business
+                    </h1>
+                    <p class="mx-auto mb-8 max-w-2xl text-lg text-muted-foreground">
+                        Connect with talented freelancers, manage projects, and grow your business with our secure and efficient platform.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="auth/signup.html?role=client" class="btn-primary">Hire a Freelancer</a>
+                        <a href="auth/signup.html?role=freelancer" class="btn-secondary">Become a Freelancer</a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-16 flow-root sm:mt-24">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-t from-background"></div>
+                    <img src="public/hero-grid.png" alt="Project Grid" class="relative mx-auto rounded-xl shadow-2xl">
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="py-24 bg-muted/50">
             <div class="container">
-                <h1>Connect with top freelancers and clients</h1>
-                <p>Find work or hire talented professionals for your projects</p>
-                <div class="cta-buttons">
-                    <a href="auth/signup.html?role=client" class="btn-primary">Hire Talent</a>
-                    <a href="auth/signup.html?role=freelancer" class="btn-secondary">Find Work</a>
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl font-bold tracking-tight mb-4">Why Choose FreelanceHub?</h2>
+                    <p class="text-lg text-muted-foreground">Everything you need to find talent and manage projects in one place.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="rounded-lg border bg-card p-8 shadow-sm">
+                        <div class="mb-4 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Top Talent</h3>
+                        <p class="text-muted-foreground">Access a global network of skilled professionals ready to bring your projects to life.</p>
+                    </div>
+                    <div class="rounded-lg border bg-card p-8 shadow-sm">
+                        <div class="mb-4 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Secure Payments</h3>
+                        <p class="text-muted-foreground">Protected payments and clear milestones ensure both parties are satisfied.</p>
+                    </div>
+                    <div class="rounded-lg border bg-card p-8 shadow-sm">
+                        <div class="mb-4 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">24/7 Support</h3>
+                        <p class="text-muted-foreground">Our dedicated team is always here to help you succeed with your projects.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-24">
+            <div class="container">
+                <div class="rounded-2xl bg-primary px-8 py-16 text-center">
+                    <h2 class="text-3xl font-bold tracking-tight text-primary-foreground mb-4">Ready to get started?</h2>
+                    <p class="text-lg text-primary-foreground/90 mb-8">Join thousands of businesses and freelancers who trust FreelanceHub.</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="jobs.html" class="btn-secondary bg-white hover:bg-white/90">Browse Jobs</a>
+                        <a href="auth/signup.html" class="btn-secondary bg-primary-foreground/10 hover:bg-primary-foreground/20 text-primary-foreground border-primary-foreground/20">Create Account</a>
+                    </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="space-y-4">
+                <h3 class="text-lg font-semibold">FreelanceHub</h3>
+                <p class="text-sm text-muted-foreground">Connecting talent with opportunity.</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">For Freelancers</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Work</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Create Profile</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Success Stories</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">For Clients</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Post a Job</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Freelancers</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Enterprise</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">Resources</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Help Center</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Blog</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Community</a>
+                    </nav>
+                </div>
+                <div class="space-y-3">
+                    <h4 class="text-sm font-semibold">Company</h4>
+                    <nav class="flex flex-col space-y-2">
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">About Us</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Careers</a>
+                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Contact</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html> 

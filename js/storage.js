@@ -1,153 +1,315 @@
 class StorageService {
     constructor() {
-        this.initializeStorage();
-    }
-
-    initializeStorage() {
-        // Initialize storage with empty arrays if not exists
+        // Initialize storage with sample data if empty
         if (!localStorage.getItem('users')) {
-            localStorage.setItem('users', JSON.stringify([]));
-        }
-        if (!localStorage.getItem('jobs')) {
-            localStorage.setItem('jobs', JSON.stringify([]));
-        }
-        if (!localStorage.getItem('applications')) {
-            localStorage.setItem('applications', JSON.stringify([]));
-        }
-        if (!localStorage.getItem('profiles')) {
-            localStorage.setItem('profiles', JSON.stringify({}));
-        }
-        if (!localStorage.getItem('messages')) {
-            localStorage.setItem('messages', JSON.stringify([]));
+            this.addSampleData();
         }
     }
 
-    // User Operations
-    createUser(user) {
-        const users = this.getUsers();
-        user.id = Date.now();
-        users.push(user);
-        localStorage.setItem('users', JSON.stringify(users));
-        return user;
-    }
-
-    getUsers() {
-        return JSON.parse(localStorage.getItem('users')) || [];
-    }
-
-    // Job Operations
-    createJob(job) {
-        const jobs = this.getJobs();
-        job.id = job.id || Date.now();
-        job.createdAt = job.createdAt || new Date().toISOString();
-        jobs.push(job);
-        localStorage.setItem('jobs', JSON.stringify(jobs));
-        return job;
-    }
-
-    getJobs() {
-        return JSON.parse(localStorage.getItem('jobs')) || [];
-    }
-
-    // Application Operations
-    createApplication(application) {
-        const applications = this.getApplications();
-        application.id = Date.now();
-        application.status = 'pending';
-        application.appliedAt = new Date().toISOString();
-        applications.push(application);
-        localStorage.setItem('applications', JSON.stringify(applications));
-        return application;
-    }
-
-    getApplications() {
-        return JSON.parse(localStorage.getItem('applications')) || [];
-    }
-
-    updateApplicationStatus(applicationId, status) {
-        const applications = this.getApplications();
-        const application = applications.find(a => a.id === applicationId);
-        
-        if (!application) {
-            throw new Error('Application not found');
-        }
-
-        // Verify the client owns the job
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        const job = this.getJobs().find(j => j.id === application.jobId);
-        
-        if (!job || job.clientId !== currentUser.id) {
-            throw new Error('Not authorized to update this application');
-        }
-
-        application.status = status;
-        application.updatedAt = new Date().toISOString();
-        localStorage.setItem('applications', JSON.stringify(applications));
-
-        // If accepted, update job status and reject other applications
-        if (status === 'accepted') {
-            // Update job status
-            const jobs = this.getJobs();
-            const jobIndex = jobs.findIndex(j => j.id === application.jobId);
-            if (jobIndex !== -1) {
-                jobs[jobIndex].status = 'filled';
-                localStorage.setItem('jobs', JSON.stringify(jobs));
+    addSampleData() {
+        const users = [
+            {
+                id: '1',
+                name: 'John Doe',
+                email: 'john@example.com',
+                password: 'password',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
+                role: 'freelancer',
+                skills: ['JavaScript', 'React', 'Node.js'],
+                hourlyRate: 50,
+                rating: 4.8,
+                jobsCompleted: 124,
+                totalEarnings: 15000
+            },
+            {
+                id: '2',
+                name: 'Jane Smith',
+                email: 'jane@example.com',
+                password: 'password',
+                avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
+                role: 'client',
+                company: 'Tech Corp',
+                jobsPosted: 45,
+                totalSpent: 25000
             }
+        ];
 
-            // Reject other applications for this job
-            const otherApplications = applications.filter(a => 
-                a.jobId === application.jobId && 
-                a.id !== applicationId &&
-                a.status === 'pending'
-            );
-            otherApplications.forEach(a => {
-                a.status = 'rejected';
-                a.updatedAt = new Date().toISOString();
-            });
-            localStorage.setItem('applications', JSON.stringify(applications));
-        }
+        const jobs = [
+            {
+                id: '1',
+                title: 'React Developer Needed',
+                description: 'Looking for an experienced React developer...',
+                budget: 5000,
+                duration: '3 months',
+                skills: ['React', 'JavaScript', 'TypeScript'],
+                postedBy: '2',
+                postedAt: '2024-01-15T10:00:00Z',
+                status: 'open'
+            },
+            {
+                id: '2',
+                title: 'Node.js Backend Developer',
+                description: 'Need help building a scalable backend...',
+                budget: 4000,
+                duration: '2 months',
+                skills: ['Node.js', 'Express', 'MongoDB'],
+                postedBy: '2',
+                postedAt: '2024-01-14T15:30:00Z',
+                status: 'open'
+            }
+        ];
 
-        return application;
-    }
+        const proposals = [
+            {
+                id: '1',
+                jobId: '1',
+                freelancerId: '1',
+                coverLetter: 'I am very interested in this position...',
+                proposedAmount: 4800,
+                estimatedDuration: '2.5 months',
+                status: 'pending',
+                submittedAt: '2024-01-16T09:15:00Z'
+            }
+        ];
 
-    // Profile Operations
-    getProfile(userId) {
-        const profiles = JSON.parse(localStorage.getItem('profiles')) || {};
-        return profiles[userId] || null;
-    }
+        const conversations = [
+            {
+                id: '1',
+                participants: ['1', '2'],
+                jobId: '1',
+                name: 'React Developer Position Discussion',
+                status: 'active',
+                lastMessage: 'Thanks for your interest in the position.',
+                lastMessageAt: '2024-01-16T10:00:00Z',
+                unreadCount: {
+                    '1': 1,
+                    '2': 0
+                }
+            }
+        ];
 
-    updateProfile(userId, profileData) {
-        const profiles = JSON.parse(localStorage.getItem('profiles')) || {};
-        profiles[userId] = {
-            ...profiles[userId],
-            ...profileData,
-            updatedAt: new Date().toISOString()
-        };
-        localStorage.setItem('profiles', JSON.stringify(profiles));
-        return profiles[userId];
-    }
+        const messages = [
+            {
+                id: '1',
+                conversationId: '1',
+                senderId: '2',
+                content: 'Hi John, thanks for applying to the React Developer position.',
+                timestamp: '2024-01-16T09:30:00Z',
+                read: true
+            },
+            {
+                id: '2',
+                conversationId: '1',
+                senderId: '1',
+                content: "Thank you for considering my application. I am very excited about this opportunity.",
+                timestamp: '2024-01-16T09:45:00Z',
+                read: true
+            },
+            {
+                id: '3',
+                conversationId: '1',
+                senderId: '2',
+                content: 'Your experience looks great. When would you be available for a technical interview?',
+                timestamp: '2024-01-16T10:00:00Z',
+                read: false
+            }
+        ];
 
-    // Message Operations
-    createMessage(message) {
-        const messages = this.getMessages();
-        message.id = Date.now();
-        message.timestamp = new Date().toISOString();
-        message.read = false;
-        messages.push(message);
+        localStorage.setItem('users', JSON.stringify(users));
+        localStorage.setItem('jobs', JSON.stringify(jobs));
+        localStorage.setItem('proposals', JSON.stringify(proposals));
+        localStorage.setItem('conversations', JSON.stringify(conversations));
         localStorage.setItem('messages', JSON.stringify(messages));
-        return message;
     }
 
-    getMessages() {
-        return JSON.parse(localStorage.getItem('messages')) || [];
+    // User methods
+    getUsers() {
+        return JSON.parse(localStorage.getItem('users') || '[]');
     }
 
-    markMessageAsRead(messageId) {
-        const messages = this.getMessages();
-        const message = messages.find(m => m.id === messageId);
-        if (message) {
-            message.read = true;
-            localStorage.setItem('messages', JSON.stringify(messages));
+    getCurrentUser() {
+        const userId = localStorage.getItem('currentUser');
+        if (!userId) return null;
+        
+        const users = this.getUsers();
+        return users.find(user => user.id === userId);
+    }
+
+    getUserById(userId) {
+        const users = this.getUsers();
+        return users.find(user => user.id === userId) || null;
+    }
+
+    login(email, password) {
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const user = users.find(u => u.email === email && u.password === password);
+        
+        if (user) {
+            localStorage.setItem('currentUser', user.id);
+            return user;
         }
+        return null;
+    }
+
+    logout() {
+        localStorage.removeItem('currentUser');
+    }
+
+    // Job methods
+    getJobs() {
+        return JSON.parse(localStorage.getItem('jobs') || '[]');
+    }
+
+    getJobById(jobId) {
+        const jobs = this.getJobs();
+        return jobs.find(job => job.id === jobId);
+    }
+
+    // Proposal methods
+    getProposals() {
+        return JSON.parse(localStorage.getItem('proposals') || '[]');
+    }
+
+    getProposalsByFreelancerId(freelancerId) {
+        const proposals = this.getProposals();
+        return proposals.filter(proposal => proposal.freelancerId === freelancerId);
+    }
+
+    getProposalsByJobId(jobId) {
+        const proposals = this.getProposals();
+        return proposals.filter(proposal => proposal.jobId === jobId);
+    }
+
+    // Message methods
+    getMessagesByUserId(userId) {
+        const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+        return conversations
+            .filter(conv => conv.participants.includes(userId))
+            .map(conv => {
+                const otherParticipantId = conv.participants.find(id => id !== userId);
+                const otherParticipant = users.find(user => user.id === otherParticipantId);
+                const lastMessage = messages
+                    .filter(msg => msg.conversationId === conv.id)
+                    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0];
+
+                return {
+                    conversationId: conv.id,
+                    senderName: otherParticipant.name,
+                    senderAvatar: otherParticipant.avatar,
+                    lastMessage: lastMessage.content,
+                    timestamp: lastMessage.timestamp,
+                    unreadCount: conv.unreadCount[userId] || 0
+                };
+            })
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    }
+
+    getConversationById(conversationId) {
+        const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+        const conversation = conversations.find(conv => conv.id === conversationId);
+        
+        if (!conversation) return null;
+
+        const participants = conversation.participants.map(id => 
+            users.find(user => user.id === id)
+        );
+
+        return {
+            ...conversation,
+            participants: participants.map(p => ({
+                id: p.id,
+                name: p.name,
+                avatar: p.avatar
+            }))
+        };
+    }
+
+    getConversationMessages(conversationId) {
+        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+        const users = JSON.parse(localStorage.getItem('users') || '[]');
+
+        return messages
+            .filter(msg => msg.conversationId === conversationId)
+            .map(msg => {
+                const sender = users.find(user => user.id === msg.senderId);
+                return {
+                    ...msg,
+                    senderName: sender.name,
+                    senderAvatar: sender.avatar
+                };
+            })
+            .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    }
+
+    markConversationAsRead(conversationId, userId) {
+        const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+
+        // Mark all messages as read
+        const updatedMessages = messages.map(msg => {
+            if (msg.conversationId === conversationId && msg.senderId !== userId) {
+                return { ...msg, read: true };
+            }
+            return msg;
+        });
+
+        // Reset unread count
+        const updatedConversations = conversations.map(conv => {
+            if (conv.id === conversationId) {
+                return {
+                    ...conv,
+                    unreadCount: {
+                        ...conv.unreadCount,
+                        [userId]: 0
+                    }
+                };
+            }
+            return conv;
+        });
+
+        localStorage.setItem('messages', JSON.stringify(updatedMessages));
+        localStorage.setItem('conversations', JSON.stringify(updatedConversations));
+    }
+
+    sendMessage({ conversationId, senderId, content, timestamp }) {
+        const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+        const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+
+        // Create new message
+        const newMessage = {
+            id: Date.now().toString(),
+            conversationId,
+            senderId,
+            content,
+            timestamp,
+            read: false
+        };
+
+        // Update conversation
+        const updatedConversations = conversations.map(conv => {
+            if (conv.id === conversationId) {
+                const otherParticipantId = conv.participants.find(id => id !== senderId);
+                return {
+                    ...conv,
+                    lastMessage: content,
+                    lastMessageAt: timestamp,
+                    unreadCount: {
+                        ...conv.unreadCount,
+                        [otherParticipantId]: (conv.unreadCount[otherParticipantId] || 0) + 1
+                    }
+                };
+            }
+            return conv;
+        });
+
+        // Save changes
+        localStorage.setItem('messages', JSON.stringify([...messages, newMessage]));
+        localStorage.setItem('conversations', JSON.stringify(updatedConversations));
+
+        return newMessage;
     }
 } 

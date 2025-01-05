@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/components.js"></script>
+    <script>
+        document.write(Components.getHeader('apply'));
+    </script>
     <title>Apply for Job - HustleHub Zimbabwe</title>
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <!-- Styles -->
-    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="/css/output.css">
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
     <!-- Navigation -->
@@ -17,20 +19,20 @@
         <div class="container flex h-16 items-center justify-between">
             <div class="flex items-center gap-6">
                 <h1 class="text-xl font-bold">
-                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                    <a href="/index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         HustleHub Zimbabwe
                     </a>
                 </h1>
                 <nav class="hidden md:flex gap-6">
-                    <a href="jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
+                    <a href="/jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
-                <a href="auth/signup.html?role=freelancer" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Find Work</a>
-                <a href="auth/login.html" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Login</a>
+                <a href="/auth/signup.html?role=freelancer" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Find Work</a>
+                <a href="/auth/login.html" class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">Login</a>
             </div>
         </div>
     </nav>
@@ -140,7 +142,7 @@
         </div>
     </main>
 
-    <script src="js/storage.js"></script>
+    <script src="/js/storage.js"></script>
     <script>
         // Get job ID from URL
         const urlParams = new URLSearchParams(window.location.search);

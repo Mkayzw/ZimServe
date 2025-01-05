@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/components.js"></script>
+    <script>
+        document.write(Components.getHeader('signup'));
+    </script>
     <title>Sign Up - HustleHub Zimbabwe</title>
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="../favicon/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="../favicon/favicon.ico">
-    <link rel="manifest" href="../favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/../favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/../favicon/favicon.ico">
+    <link rel="manifest" href="/../favicon/site.webmanifest">
     <!-- Styles -->
-    <link rel="stylesheet" href="../css/output.css">
+    <link rel="stylesheet" href="/../css/output.css">
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
     <!-- Mobile Navigation -->
     <div class="lg:hidden">
         <div class="flex items-center justify-between p-4 border-b">
-            <a href="../index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+            <a href="/../index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                 <span class="font-bold">HustleHub Zimbabwe</span>
             </a>
-            <a href="../index.html" class="text-sm text-muted-foreground hover:text-primary">
+            <a href="/../index.html" class="text-sm text-muted-foreground hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
             </a>
         </div>
@@ -29,7 +31,7 @@
         <div class="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
             <div class="absolute inset-0 bg-primary"></div>
             <div class="relative z-20 flex items-center text-lg font-medium">
-                <a href="../index.html" class="flex items-center gap-2 text-primary-foreground hover:text-primary-foreground/90">
+                <a href="/../index.html" class="flex items-center gap-2 text-primary-foreground hover:text-primary-foreground/90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                     HustleHub Zimbabwe
                 </a>
@@ -129,9 +131,9 @@
                                 />
                                 <label for="terms" class="text-sm text-muted-foreground">
                                     I agree to the
-                                    <a href="#" class="text-primary hover:text-primary/90">terms of service</a>
+                                    <a href="/#" class="text-primary hover:text-primary/90">terms of service</a>
                                     and
-                                    <a href="#" class="text-primary hover:text-primary/90">privacy policy</a>
+                                    <a href="/#" class="text-primary hover:text-primary/90">privacy policy</a>
                                 </label>
                             </div>
                             <button type="submit" class="btn-primary w-full">
@@ -170,7 +172,7 @@
                 </div>
                 <p class="px-8 text-center text-sm text-muted-foreground">
                     Already have an account?{" "}
-                    <a href="login.html" class="underline underline-offset-4 hover:text-primary">
+                    <a href="/login.html" class="underline underline-offset-4 hover:text-primary">
                         Sign in
                     </a>
                 </p>
@@ -179,7 +181,7 @@
     </div>
 
     <!-- Initialize storage service -->
-    <script src="../js/storage.js"></script>
+    <script src="/../js/storage.js"></script>
     <script>
         const storage = new StorageService();
         

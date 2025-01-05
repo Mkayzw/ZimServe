@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/components.js"></script>
+    <script>
+        document.write(Components.getHeader('messages'));
+    </script>
     <title>Messages - HustleHub Zimbabwe</title>
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <!-- Styles -->
-    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="/css/output.css">
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
     <!-- Navigation -->
@@ -17,15 +19,15 @@
         <div class="container flex h-16 items-center justify-between">
             <div class="flex items-center gap-6">
                 <h1 class="text-xl font-bold">
-                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                    <a href="/index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         HustleHub Zimbabwe
                     </a>
                 </h1>
                 <nav class="hidden md:flex gap-6">
-                    <a href="dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Dashboard</a>
-                    <a href="jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Earnings</a>
+                    <a href="/dashboard.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Dashboard</a>
+                    <a href="/jobs.html" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">Earnings</a>
                 </nav>
             </div>
             <div class="flex items-center gap-4">
@@ -34,7 +36,7 @@
                     <span class="sr-only">Notifications</span>
                 </button>
                 <div class="flex items-center gap-4">
-                    <a href="profile.html" class="inline-flex items-center justify-center text-sm font-medium hover:text-primary">
+                    <a href="/profile.html" class="inline-flex items-center justify-center text-sm font-medium hover:text-primary">
                         <span class="relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full">
                             <img id="userAvatar" class="aspect-square h-full w-full" alt="User Avatar" />
                         </span>
@@ -108,7 +110,7 @@
         </div>
     </main>
 
-    <script src="js/storage.js"></script>
+    <script src="/js/storage.js"></script>
     <script>
         // Check authentication
         const storageService = new StorageService();
@@ -138,7 +140,7 @@
                 messageList.innerHTML = messages.map(message => `
                     <div class="flex items-center gap-4 p-4 hover:bg-accent/50 cursor-pointer ${message.conversationId === activeConversation?.id ? 'bg-accent' : ''}"
                          onclick="openConversation('${message.conversationId}')">
-                        <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                        <img src="/${message.senderAvatar || 'images/default-avatar.png'}" 
                              alt="Sender" 
                              class="w-10 h-10 rounded-full">
                         <div class="flex-1 min-w-0">
@@ -179,7 +181,7 @@
                     <div class="flex ${message.senderId === currentUser.id ? 'justify-end' : 'justify-start'}">
                         <div class="flex flex-col gap-1 max-w-[70%]">
                             <div class="flex items-center gap-2 ${message.senderId === currentUser.id ? 'flex-row-reverse' : ''}">
-                                <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                                <img src="/${message.senderAvatar || 'images/default-avatar.png'}" 
                                      alt="${message.senderName}" 
                                      class="w-6 h-6 rounded-full">
                                 <span class="text-sm font-medium">${message.senderName}</span>
@@ -246,7 +248,7 @@
                 messageList.innerHTML = filteredMessages.map(message => `
                     <div class="flex items-center gap-4 p-4 hover:bg-accent/50 cursor-pointer ${message.conversationId === activeConversation?.id ? 'bg-accent' : ''}"
                          onclick="openConversation('${message.conversationId}')">
-                        <img src="${message.senderAvatar || 'images/default-avatar.png'}" 
+                        <img src="/${message.senderAvatar || 'images/default-avatar.png'}" 
                              alt="Sender" 
                              class="w-10 h-10 rounded-full">
                         <div class="flex-1 min-w-0">

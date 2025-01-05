@@ -1,35 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/components.js"></script>
+    <script>
+        document.write(Components.getHeader('jobs'));
+    </script>
     <title>Available Jobs - HustleHub Zimbabwe</title>
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <!-- Styles -->
-    <link rel="stylesheet" href="css/output.css">
+    <link rel="stylesheet" href="/css/output.css">
 </head>
 <body class="min-h-screen bg-background font-sans antialiased">
     <nav id="mainNav">
         <div class="nav-content">
             <div class="flex items-center gap-6">
                 <h1 class="text-xl font-bold">
-                    <a href="index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
+                    <a href="/index.html" class="flex items-center gap-2 text-primary hover:text-primary/90">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
                         HustleHub Zimbabwe
                     </a>
                 </h1>
                 <nav class="hidden md:flex gap-6">
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
-                    <a href="#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">Browse Jobs</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">Categories</a>
+                    <a href="/#" class="text-sm font-medium text-muted-foreground hover:text-primary">How it Works</a>
                 </nav>
             </div>
-            <div class="nav-links">
-                <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
-                <a href="auth/login.html" class="btn-secondary">Login</a>
+            <div class="nav-links flex items-center gap-4">
+                <script>document.write(Components.getThemeToggle());</script>
+                <a href="/auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
+                <a href="/auth/login.html" class="btn-secondary">Login</a>
             </div>
         </div>
     </nav>
@@ -40,8 +43,8 @@
                 <h3 class="text-2xl font-semibold mb-4 text-primary">Ready to start freelancing?</h3>
                 <p class="text-muted-foreground mb-6">Join thousands of freelancers who have found success on our platform. Sign up today to start bidding on projects and building your freelance career.</p>
                 <div class="flex gap-4">
-            <a href="auth/signup.html?role=freelancer" class="btn-primary">Sign Up as Freelancer</a>
-                    <a href="#" class="btn-secondary">Learn More</a>
+            <a href="/auth/signup.html?role=freelancer" class="btn-primary">Sign Up as Freelancer</a>
+                    <a href="/#" class="btn-secondary">Learn More</a>
                 </div>
             </div>
         </div>
@@ -81,40 +84,40 @@
                 <div class="space-y-3">
                     <h4 class="text-sm font-semibold">For Freelancers</h4>
                     <nav class="flex flex-col space-y-2">
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Work</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Create Profile</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Success Stories</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Find Work</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Create Profile</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Success Stories</a>
                     </nav>
                 </div>
                 <div class="space-y-3">
                     <h4 class="text-sm font-semibold">For Clients</h4>
                     <nav class="flex flex-col space-y-2">
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Post a Job</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Find Freelancers</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Enterprise</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Post a Job</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Find Freelancers</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Enterprise</a>
                     </nav>
                 </div>
                 <div class="space-y-3">
                     <h4 class="text-sm font-semibold">Resources</h4>
                     <nav class="flex flex-col space-y-2">
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Help Center</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Blog</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Community</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Help Center</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Blog</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Community</a>
                     </nav>
                 </div>
                 <div class="space-y-3">
                     <h4 class="text-sm font-semibold">Company</h4>
                     <nav class="flex flex-col space-y-2">
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">About Us</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Careers</a>
-                        <a href="#" class="text-sm text-muted-foreground hover:text-primary">Contact</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">About Us</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Careers</a>
+                        <a href="/#" class="text-sm text-muted-foreground hover:text-primary">Contact</a>
                     </nav>
                 </div>
             </div>
         </div>
     </footer>
 
-    <script src="js/storage.js"></script>
+    <script src="/js/storage.js"></script>
     <script>
         // Initialize storage service
         const storageService = new StorageService();
@@ -125,13 +128,13 @@
             const navLinks = document.querySelector('.nav-links');
             if (currentUser) {
                 navLinks.innerHTML = `
-                    <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+                    <a href="/dashboard.html" class="btn-secondary">Dashboard</a>
                     <button onclick="handleLogout()" class="btn-secondary">Logout</button>
                 `;
             } else {
                 navLinks.innerHTML = `
-                    <a href="auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
-                    <a href="auth/login.html" class="btn-secondary">Login</a>
+                    <a href="/auth/signup.html?role=freelancer" class="btn-primary">Find Work</a>
+                    <a href="/auth/login.html" class="btn-secondary">Login</a>
                 `;
             }
         }
@@ -181,11 +184,11 @@
                             </div>
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center gap-2">
-                                    <img src="${client?.avatar || 'images/default-avatar.png'}" alt="${client?.name}" class="w-6 h-6 rounded-full">
+                                    <img src="/${client?.avatar || 'images/default-avatar.png'}" alt="${client?.name}" class="w-6 h-6 rounded-full">
                                     <span class="text-sm text-muted-foreground">${client?.name || 'Unknown Client'}</span>
                                 </div>
                                 ${showApplyButton ? `
-                                    <a href="apply.html?jobId=${job.id}" 
+                                    <a href="/apply.html?jobId=${job.id}" 
                                        class="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2 ${hasApplied ? 'opacity-50 cursor-not-allowed' : ''}"
                                        ${hasApplied ? 'disabled' : ''}>
                                         ${hasApplied ? 'Already Applied' : 'Apply Now'}

@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/components.js"></script>
+    <script>
+        document.write(Components.getHeader('profile'));
+    </script>
     <title>Profile - HustleHub Zimbabwe</title>
     <!-- Favicons -->
-    <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
-    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
-    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+    <link rel="manifest" href="/favicon/site.webmanifest">
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <style>
         .profile-container {
             max-width: 800px;
@@ -88,9 +90,10 @@
 <body>
     <nav id="mainNav">
         <div class="nav-content">
-            <h1><a href="index.html">HustleHub Zimbabwe</a></h1>
-            <div class="nav-links">
-                <a href="dashboard.html" class="btn-secondary">Dashboard</a>
+            <h1><a href="/index.html">HustleHub Zimbabwe</a></h1>
+            <div class="nav-links flex items-center gap-4">
+                <script>document.write(Components.getThemeToggle());</script>
+                <a href="/dashboard.html" class="btn-secondary">Dashboard</a>
                 <button onclick="handleLogout()" class="btn-secondary">Logout</button>
             </div>
         </div>
@@ -143,9 +146,9 @@
         </div>
     </div>
 
-    <script src="js/storage.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/profile.js"></script>
+    <script src="/js/storage.js"></script>
+    <script src="/js/auth.js"></script>
+    <script src="/js/profile.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const profile = new ProfileManager(new StorageService(), new AuthService(new StorageService()));
